@@ -28,6 +28,6 @@
     <Folder Include="ControllerTests\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Org.Couchbase.Quickstart.API\Org.Couchbase.Quickstart.API.csproj" />
+    <ProjectReference Include="..\..\Org.Quickstart.API\Org.Quickstart.API.csproj" />
   </ItemGroup>
 </Project>

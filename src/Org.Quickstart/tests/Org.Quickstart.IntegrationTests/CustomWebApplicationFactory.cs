@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Hosting;
-using Org.Couchbase.Quickstart.API;
+using Org.Quickstart.API;
 
-namespace Org.Couchbase.Quickstart.IntegrationTests
+namespace Org.Quickstart.IntegrationTests
 {
     public class CustomWebApplicationFactory<TStartup>
         : WebApplicationFactory<Startup>

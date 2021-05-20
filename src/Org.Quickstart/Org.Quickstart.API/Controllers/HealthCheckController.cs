@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Org.Couchbase.Quickstart.API.Controllers
+namespace Org.Quickstart.API.Controllers
 {
     [ApiController]
     [Route("healthcheck")]

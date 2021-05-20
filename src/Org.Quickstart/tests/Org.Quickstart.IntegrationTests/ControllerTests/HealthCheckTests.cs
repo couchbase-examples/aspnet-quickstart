@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Org.Couchbase.Quickstart.IntegrationTests.ControllerTests
+namespace Org.Quickstart.IntegrationTests.ControllerTests
 {
     public class HealthCheckTests
         : IClassFixture<CustomWebApplicationFactory<Startup>>

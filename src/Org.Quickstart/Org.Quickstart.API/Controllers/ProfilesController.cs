@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Org.Couchbase.Quickstart.API.Models;
+using Org.Quickstart.API.Models;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Org.Couchbase.Quickstart.API.Controllers
+namespace Org.Quickstart.API.Controllers
 {
     [ApiController]
     [Route("profiles")]

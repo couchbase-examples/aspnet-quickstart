@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Org.Couchbase.Quickstart.API.Models
+namespace Org.Quickstart.API.Models
 {
     public class ProfileRequestCommand
     {

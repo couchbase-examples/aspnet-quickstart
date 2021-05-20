@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.809.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Org.Couchbase.Quickstart.API", "Org.Couchbase.Quickstart.API\Org.Couchbase.Quickstart.API.csproj", "{7F8AE826-B2BE-433F-85D2-A9BD378CA46D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Org.Quickstart.API", "Org.Quickstart.API\Org.Quickstart.API.csproj", "{7F8AE826-B2BE-433F-85D2-A9BD378CA46D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Org.Couchbase.Quickstart.IntegrationTests", "tests\Org.Couchbase.Quickstart.IntegrationTests\Org.Couchbase.Quickstart.IntegrationTests.csproj", "{14C3BED2-F463-4CC6-ABB8-4AF9C6D20EE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Org.IntegrationTests", "tests\Org.Quickstart.IntegrationTests\Org.IntegrationTests.csproj", "{FB990915-FD68-4855-A686-ED2C914324C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{7F8AE826-B2BE-433F-85D2-A9BD378CA46D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F8AE826-B2BE-433F-85D2-A9BD378CA46D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F8AE826-B2BE-433F-85D2-A9BD378CA46D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14C3BED2-F463-4CC6-ABB8-4AF9C6D20EE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14C3BED2-F463-4CC6-ABB8-4AF9C6D20EE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14C3BED2-F463-4CC6-ABB8-4AF9C6D20EE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14C3BED2-F463-4CC6-ABB8-4AF9C6D20EE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB990915-FD68-4855-A686-ED2C914324C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB990915-FD68-4855-A686-ED2C914324C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB990915-FD68-4855-A686-ED2C914324C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB990915-FD68-4855-A686-ED2C914324C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

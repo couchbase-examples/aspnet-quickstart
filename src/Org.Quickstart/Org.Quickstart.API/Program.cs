@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Org.Couchbase.Quickstart.API
+namespace Org.Quickstart.API
 {
     public class Program
     {
