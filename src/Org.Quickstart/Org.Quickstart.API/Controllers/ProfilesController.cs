@@ -14,9 +14,6 @@ namespace Org.Quickstart.API.Controllers
     public class ProfilesController
         : Controller
     {
-        /// <summary>
-        /// logger
-        /// </summary>
         protected readonly ILogger _logger;
 
         public ProfilesController(ILogger<ProfilesController> logger)
