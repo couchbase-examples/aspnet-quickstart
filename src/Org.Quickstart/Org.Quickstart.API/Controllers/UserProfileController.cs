@@ -22,11 +22,9 @@ namespace Org.Quickstart.API.Controllers
     {
         private readonly IClusterProvider _clusterProvider;
         private readonly IBucketProvider _bucketProvider;
+        private readonly ILogger _logger;
+
         private readonly CouchbaseConfig _couchbaseConfig;
-        /// <summary>
-        /// logger
-        /// </summary>
-        protected readonly ILogger _logger;
 
         public UserProfileController(
             IClusterProvider clusterProvider,
