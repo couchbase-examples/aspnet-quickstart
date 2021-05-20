@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Org.Quickstart.API.Models;
 using Org.Quickstart.API.Services;
 
 namespace Org.Quickstart.API
@@ -21,7 +22,9 @@ namespace Org.Quickstart.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+	        services.Configure<CouchbaseConfig>(Configuration.GetSection("Couchbase"));
 	        services.AddCouchbase(Configuration.GetSection("Couchbase"));
+	        services.AddHttpClient();
             services.AddTransient<DatabaseService>();
 
             services.AddControllers();

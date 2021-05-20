@@ -1,4 +1,5 @@
-﻿using Org.Couchbase.Quickstart.API;
+﻿using Org.Quickstart.API;
+using Org.Quickstart.API.Services;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;

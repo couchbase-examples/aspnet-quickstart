@@ -29,7 +29,7 @@ namespace Org.Quickstart.API.Controllers
         [SwaggerResponse(200, "Returns a report")]
         [SwaggerResponse(404, "Report not found")]
         [SwaggerResponse(500, "Returns an internal error")]
-        public async Task<IActionResult> GetById([FromQuery] Guid id)
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace Org.Quickstart.API.Controllers
         [SwaggerResponse(201, "Create a user profile")]
         [SwaggerResponse(409, "the email of the user already exists")]
         [SwaggerResponse(500, "Returns an internal error")]
-        public async Task<IActionResult> Post([FromBody] ProfileRequestCommand request)
+        public async Task<IActionResult> Post([FromBody] ProfileUpdateRequestCommand request)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace Org.Quickstart.API.Controllers
         [SwaggerResponse(200, "Update a user profile")]
         [SwaggerResponse(404, "user profile not found")]
         [SwaggerResponse(500, "Returns an internal error")]
-        public async Task<IActionResult> Update([FromBody] ProfileRequestCommand request)
+        public async Task<IActionResult> Update([FromBody] ProfileUpdateRequestCommand request)
         {
             try
             {
@@ -104,6 +104,26 @@ namespace Org.Quickstart.API.Controllers
             {
                 _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message} {ex.StackTrace} {Request.GetDisplayUrl()}");
+            }
+        }
+
+        [HttpDelete("{id:Guid}")]
+        [SwaggerOperation(OperationId = "Profile-Delete", Summary = "Delete a profile", Description = "Delete a profile from the request")]
+        [SwaggerResponse(200, "Delete a profile")]
+        [SwaggerResponse(404, "profile not found")]
+        [SwaggerResponse(500, "Returns an internal error")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            try
+            {
+                //todo add code in here and replace this part
+                await Task.Delay(100);
+                return this.Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }

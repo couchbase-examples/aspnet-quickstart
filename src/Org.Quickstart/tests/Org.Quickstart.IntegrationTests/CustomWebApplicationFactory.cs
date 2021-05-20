@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
 using Org.Quickstart.API;
+using Org.Quickstart.API.Services;
 
 namespace Org.Quickstart.IntegrationTests
 {
@@ -18,5 +21,5 @@ namespace Org.Quickstart.IntegrationTests
         {
             base.ConfigureWebHost(builder);
         }
-    }
+	}
 }
