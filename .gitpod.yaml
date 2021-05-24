@@ -6,8 +6,8 @@ tasks:
 - name: Start Couchbase
   command:  cd /opt/couchbase/ && ./start-cb.sh
 - name: Start app
-  init: ./build.sh 
-  command: while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' -u Administrator:password localhost:8091/pools/default/buckets/user_profile)" != "200" ]]; do sleep 5; done && ./run.sh 
+  init: cd src/Org.Quickstart/Org.Quickstart.API \ dotnet build 
+  command: while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' -u Administrator:password localhost:8091/pools/default/buckets/user_profile)" != "200" ]]; do sleep 5; done && dotnet run 
 
 # exposed ports
 ports:
