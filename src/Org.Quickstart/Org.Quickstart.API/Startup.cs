@@ -12,9 +12,12 @@ namespace Org.Quickstart.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _env;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -52,11 +55,18 @@ namespace Org.Quickstart.API
 		        ));
             }
 
-	        //setup the database once everything is setup and running
-	        appLifetime.ApplicationStarted.Register(async () => {
-		        var db = app.ApplicationServices.GetService<DatabaseService>();
-		        await db.SetupDatabase();
-	        });
+	        if (_env.EnvironmentName == "Testing"){
+	            //setup the database once everything is setup and running
+	            appLifetime.ApplicationStarted.Register(() => {
+		            var db = app.ApplicationServices.GetService<DatabaseService>();
+		            db.SetupDatabase().RunSynchronously();
+	            });
+		    } else {
+	            appLifetime.ApplicationStarted.Register(async () => {
+		            var db = app.ApplicationServices.GetService<DatabaseService>();
+		            await db.SetupDatabase();
+	            });
+		    }
 
             //remove couchbase from memory when ASP.NET closes
             appLifetime.ApplicationStopped.Register(() => {
@@ -66,11 +76,8 @@ namespace Org.Quickstart.API
             });
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

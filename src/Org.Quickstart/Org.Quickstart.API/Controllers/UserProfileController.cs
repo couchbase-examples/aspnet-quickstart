@@ -16,7 +16,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Org.Quickstart.API.Controllers
 {
     [ApiController]
-    [Route("userprofiles")]
+    [Route("/api/v1/userprofile")]
     public class UserProfileController
         : Controller
     {
@@ -107,7 +107,7 @@ namespace Org.Quickstart.API.Controllers
 		        profile.Id = Guid.NewGuid();
 		        await collection.InsertAsync(profile.Id.ToString(), profile);
 
-                return Ok(profile);
+                return Created($"/api/v1/userprofile/{profile.Id}", profile);
 
             }
             catch (Exception ex)
@@ -132,7 +132,7 @@ namespace Org.Quickstart.API.Controllers
                 var profile = result.ContentAs<Profile>();
 		
                 var updateResult = await collection.ReplaceAsync<Profile>(request.Id.ToString(), request.GetProfile());
-                return Ok(profile);
+                return Ok(request);
 
             }
             catch (Exception ex)
