@@ -25,6 +25,6 @@ github:
     # enable for the master/default branch (defaults to true)
     master: true
 
- vscode:
-   extensions:
-     - ms-dotnettools.csharp
+vscode:
+  extensions:
+    - ms-dotnettools.csharp
