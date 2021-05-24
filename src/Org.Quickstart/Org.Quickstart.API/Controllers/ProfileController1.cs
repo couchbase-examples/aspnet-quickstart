@@ -16,7 +16,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Org.Quickstart.API.Controllers
 {
     [ApiController]
-    [Route("/api/v1/profile1")]
+    [Route("/api/v1/profile")]
     public class ProfileCompletedController
         : Controller
     {
@@ -30,7 +30,7 @@ namespace Org.Quickstart.API.Controllers
             IClusterProvider clusterProvider,
             IBucketProvider bucketProvider,
 	        IOptions<CouchbaseConfig> options,
-            ILogger<ProfilesController> logger)
+            ILogger<ProfileCompletedController> logger)
         {
 	        _clusterProvider = clusterProvider;
 	        _bucketProvider = bucketProvider;
@@ -71,7 +71,7 @@ namespace Org.Quickstart.API.Controllers
         [SwaggerOperation(OperationId = "UserProfile-List", Summary = "Get user profiles", Description = "Get a list of user profiles from the request")]
         [SwaggerResponse(200, "Returns the list of user profiles")]
         [SwaggerResponse(500, "Returns an internal error")]
-        public async Task<IActionResult> List([FromQuery] ProfileRequest request)
+        public async Task<IActionResult> List([FromQuery] ProfileRequestQuery request)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace Org.Quickstart.API.Controllers
 		        profile.Id = Guid.NewGuid();
 		        await collection.InsertAsync(profile.Id.ToString(), profile);
 
-                return Created($"/api/v1/userprofile/{profile.Id}", profile);
+                return Created($"/api/v1/profile/{profile.Id}", profile);
 
             }
             catch (Exception ex)

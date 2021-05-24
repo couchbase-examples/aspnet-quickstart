@@ -25,12 +25,19 @@ namespace Org.Quickstart.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+	        //read in configuration to connect to the database
 	        services.Configure<CouchbaseConfig>(Configuration.GetSection("Couchbase"));
+
+	        //register the configuration 
 	        services.AddCouchbase(Configuration.GetSection("Couchbase"));
 	        services.AddHttpClient();
+
+	        //register the service to handle bucket, collection, scope, and index creation
             services.AddTransient<DatabaseService>();
 
             services.AddControllers();
+
+	        //customize Swagger UI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { 
@@ -56,12 +63,13 @@ namespace Org.Quickstart.API
             }
 
 	        if (_env.EnvironmentName == "Testing"){
-	            //setup the database once everything is setup and running
+	            //setup the database once everything is setup and running integration tests need to make sure database is fully working before running,hence running Synchronously
 	            appLifetime.ApplicationStarted.Register(() => {
 		            var db = app.ApplicationServices.GetService<DatabaseService>();
 		            db.SetupDatabase().RunSynchronously();
 	            });
 		    } else {
+	            //setup the database once everything is setup and running
 	            appLifetime.ApplicationStarted.Register(async () => {
 		            var db = app.ApplicationServices.GetService<DatabaseService>();
 		            await db.SetupDatabase();

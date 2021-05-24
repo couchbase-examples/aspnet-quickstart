@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Org.Quickstart.API.Models
 {
-    public class ProfileRequest
+    public class ProfileRequestQuery
     {
         public String FirstNameSearch { get; set; }
         public int Limit { get; set; }
