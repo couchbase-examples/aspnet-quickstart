@@ -3,7 +3,7 @@ namespace Org.Quickstart.API.Models
 {
     public class ProfileUpdateRequestCommand
     {
-        public Guid Id { get; set;  }
+        public Guid Pid { get; set;  }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -13,7 +13,7 @@ namespace Org.Quickstart.API.Models
 	    {
 	        return new Profile
             {
-                Id = this.Id,
+                Pid = this.Pid,
 		        FirstName = this.FirstName,
 		        LastName = this.LastName,
 		        Email = this.Email,

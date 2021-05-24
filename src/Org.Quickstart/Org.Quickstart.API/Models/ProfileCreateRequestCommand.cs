@@ -12,6 +12,7 @@ namespace Org.Quickstart.API.Models
         {
             return new Profile
             {
+		        Pid = new Guid(),
                 FirstName = this.FirstName,
                 LastName = this.LastName,
                 Email = this.Email,

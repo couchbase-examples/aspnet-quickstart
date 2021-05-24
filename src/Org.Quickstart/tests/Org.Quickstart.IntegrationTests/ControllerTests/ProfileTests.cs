@@ -16,7 +16,8 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
         : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         private readonly HttpClient _client;
-		private readonly string baseHostname = "/api/v1/profile";
+		private readonly string baseHostname = "/api/v1/profile1";
+		private readonly string baseHostnameSearch = "/api/v1/profiles1";
 
         public ProfileTests(CustomWebApplicationFactory<Startup> factory)
         {
@@ -42,7 +43,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 	        Assert.Equal(userProfile.Email, newUserResult.Email);  
 
 	        //remove user
-	        var deleteResponse = await _client.DeleteAsync($"{baseHostname}/{newUserResult.Id}"); 
+	        var deleteResponse = await _client.DeleteAsync($"{baseHostname}/{newUserResult.Pid}"); 
 	        Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
         }
 
@@ -75,7 +76,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 	        Assert.Equal(newUserResult.LastName, updateUserResult.LastName);
 
 			//remove user
-			var deleteResponse = await _client.DeleteAsync($"{baseHostname}/{updateUserResult.Id}");
+			var deleteResponse = await _client.DeleteAsync($"{baseHostname}/{updateUserResult.Pid}");
 			Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
 
 		}
@@ -94,7 +95,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 			var newUserResult = JsonConvert.DeserializeObject<Profile>(jsonResults);
 			
 			//get the user from the main API
-			var getResponse = await _client.GetAsync($"{baseHostname}/{newUserResult.Id}"); 
+			var getResponse = await _client.GetAsync($"{baseHostname}/{newUserResult.Pid}"); 
 			Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
 			var getJsonResult = await getResponse.Content.ReadAsStringAsync();
 			var getUserResult = JsonConvert.DeserializeObject<Profile>(getJsonResult);
@@ -105,7 +106,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 	        Assert.Equal(newUserResult.LastName, getUserResult.LastName);
 
 			//remove user
-			var deleteResponse = await _client.DeleteAsync($"{baseHostname}/{newUserResult.Id}");
+			var deleteResponse = await _client.DeleteAsync($"{baseHostname}/{newUserResult.Pid}");
 			Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
 		}
 
@@ -123,7 +124,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 			var newUserResult = JsonConvert.DeserializeObject<Profile>(jsonResults);
 
 			//get the user from the main API
-			var getResponse = await _client.GetAsync($"{baseHostname}?FirstNameSearch={userProfile.FirstName}&Skip=0&Limit=5");
+			var getResponse = await _client.GetAsync($"{baseHostnameSearch}?FirstNameSearch={userProfile.FirstName}&Skip=0&Limit=5");
 			Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
 			var getJsonResult = await getResponse.Content.ReadAsStringAsync();
 			var getUserResult = JsonConvert.DeserializeObject<List<Profile>>(getJsonResult);
@@ -134,7 +135,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 			Assert.Equal(newUserResult.LastName, getUserResult[0].LastName);
 
 			//remove user
-			var deleteResponse = await _client.DeleteAsync($"{baseHostname}/{newUserResult.Id}");
+			var deleteResponse = await _client.DeleteAsync($"{baseHostname}/{newUserResult.Pid}");
 			Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
 		}
 
