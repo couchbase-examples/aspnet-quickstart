@@ -16,8 +16,8 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Org.Quickstart.API.Controllers
 {
     [ApiController]
-    [Route("/api/v1/userprofile")]
-    public class UserProfileController
+    [Route("/api/v1/profile1")]
+    public class ProfileCompletedController
         : Controller
     {
         private readonly IClusterProvider _clusterProvider;
@@ -26,7 +26,7 @@ namespace Org.Quickstart.API.Controllers
 
         private readonly CouchbaseConfig _couchbaseConfig;
 
-        public UserProfileController(
+        public ProfileCompletedController(
             IClusterProvider clusterProvider,
             IBucketProvider bucketProvider,
 	        IOptions<CouchbaseConfig> options,

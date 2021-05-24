@@ -10,7 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Org.Quickstart.API.Controllers
 {
     [ApiController]
-    [Route("profiles")]
+    [Route("/api/v1/profile")]
     public class ProfilesController
         : Controller
     {

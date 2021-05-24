@@ -16,6 +16,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
         : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         private readonly HttpClient _client;
+		private readonly string baseHostname = "/api/v1/profile1";
 
         public ProfileTests(CustomWebApplicationFactory<Startup> factory)
         {
@@ -29,7 +30,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
             var userProfile = GetProfile();
             var newUser = JsonConvert.SerializeObject(userProfile);
             var content = new StringContent(newUser, Encoding.UTF8, "application/json");
-	        var response = await _client.PostAsync("/api/v1/userprofile", content);
+	        var response = await _client.PostAsync(baseHostname, content);
 
 	        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 	        var jsonResults = await response.Content.ReadAsStringAsync();
@@ -41,7 +42,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 	        Assert.Equal(userProfile.Email, newUserResult.Email);  
 
 	        //remove user
-	        var deleteResponse = await _client.DeleteAsync($"/api/v1/userprofile/{newUserResult.Id}"); 
+	        var deleteResponse = await _client.DeleteAsync($"{baseHostname}/{newUserResult.Id}"); 
 	        Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
         }
 
@@ -52,7 +53,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
             var userProfile = GetProfile();
             var newUser = JsonConvert.SerializeObject(userProfile);
             var content = new StringContent(newUser, Encoding.UTF8, "application/json");
-            var response = await _client.PostAsync("/api/v1/userprofile", content);
+            var response = await _client.PostAsync(baseHostname, content);
 
             var jsonResults = await response.Content.ReadAsStringAsync();
             var newUserResult = JsonConvert.DeserializeObject<Profile>(jsonResults);
@@ -62,7 +63,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
             
 	        var updateUserJson = JsonConvert.SerializeObject(newUserResult);
 	        var updateContent =  new StringContent(updateUserJson, Encoding.UTF8, "application/json");
-	        var updateResponse = await _client.PutAsync("/api/v1/userprofile/", updateContent);
+	        var updateResponse = await _client.PutAsync($"{baseHostname}/", updateContent);
             
 	        Assert.Equal(HttpStatusCode.OK, updateResponse.StatusCode);
 	        var jsonResult = await updateResponse.Content.ReadAsStringAsync();    
@@ -74,7 +75,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 	        Assert.Equal(newUserResult.LastName, updateUserResult.LastName);
 
 			//remove user
-			var deleteResponse = await _client.DeleteAsync($"/api/v1/userprofile/{updateUserResult.Id}");
+			var deleteResponse = await _client.DeleteAsync($"{baseHostname}/{updateUserResult.Id}");
 			Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
 
 		}
@@ -86,14 +87,14 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 			var userProfile = GetProfile();
 			var newUser = JsonConvert.SerializeObject(userProfile);
 			var content = new StringContent(newUser, Encoding.UTF8, "application/json");
-			var response = await _client.PostAsync("/api/v1/userprofile", content);
+			var response = await _client.PostAsync(baseHostname, content);
 
 			Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 			var jsonResults = await response.Content.ReadAsStringAsync();
 			var newUserResult = JsonConvert.DeserializeObject<Profile>(jsonResults);
 			
 			//get the user from the main API
-			var getResponse = await _client.GetAsync($"/api/v1/userprofile/{newUserResult.Id}"); 
+			var getResponse = await _client.GetAsync($"{baseHostname}/{newUserResult.Id}"); 
 			Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
 			var getJsonResult = await getResponse.Content.ReadAsStringAsync();
 			var getUserResult = JsonConvert.DeserializeObject<Profile>(getJsonResult);
@@ -104,7 +105,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 	        Assert.Equal(newUserResult.LastName, getUserResult.LastName);
 
 			//remove user
-			var deleteResponse = await _client.DeleteAsync($"/api/v1/userprofile/{newUserResult.Id}");
+			var deleteResponse = await _client.DeleteAsync($"{baseHostname}/{newUserResult.Id}");
 			Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
 		}
 
@@ -115,14 +116,14 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 			var userProfile = GetProfile();
 			var newUser = JsonConvert.SerializeObject(userProfile);
 			var content = new StringContent(newUser, Encoding.UTF8, "application/json");
-			var response = await _client.PostAsync("/api/v1/userprofile", content);
+			var response = await _client.PostAsync(baseHostname, content);
 
 			Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 			var jsonResults = await response.Content.ReadAsStringAsync();
 			var newUserResult = JsonConvert.DeserializeObject<Profile>(jsonResults);
 
 			//get the user from the main API
-			var getResponse = await _client.GetAsync($"/api/v1/userprofile?FirstNameSearch={userProfile.FirstName}&Skip=0&Limit=5");
+			var getResponse = await _client.GetAsync($"{baseHostname}?FirstNameSearch={userProfile.FirstName}&Skip=0&Limit=5");
 			Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
 			var getJsonResult = await getResponse.Content.ReadAsStringAsync();
 			var getUserResult = JsonConvert.DeserializeObject<List<Profile>>(getJsonResult);
@@ -133,7 +134,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 			Assert.Equal(newUserResult.LastName, getUserResult[0].LastName);
 
 			//remove user
-			var deleteResponse = await _client.DeleteAsync($"/api/v1/userprofile/{newUserResult.Id}");
+			var deleteResponse = await _client.DeleteAsync($"{baseHostname}/{newUserResult.Id}");
 			Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
 		}
 
