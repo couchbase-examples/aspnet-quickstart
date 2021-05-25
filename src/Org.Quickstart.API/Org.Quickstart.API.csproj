@@ -9,7 +9,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.1.4" />
-    <PackageReference Include="Couchbase.Extensions.DependencyInjection" Version="3.1.5" />
+    <PackageReference Include="Couchbase.Extensions.DependencyInjection" Version="3.1.6" />
   </ItemGroup>
 
   <ItemGroup>
