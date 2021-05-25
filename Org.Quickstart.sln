@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.809.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B1D00F15-0030-4E03-B23C-D980D30E8E1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Org.Quickstart.API", "src\Org.Quickstart.API\Org.Quickstart.API.csproj", "{D6332DE4-42AA-48CA-83B3-DBBA6002E9CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Org.Quickstart.IntegrationTests", "src\Org.Quickstart.IntegrationTests\Org.Quickstart.IntegrationTests.csproj", "{38D10150-74CD-47E4-88BF-60CF257E3B96}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6332DE4-42AA-48CA-83B3-DBBA6002E9CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6332DE4-42AA-48CA-83B3-DBBA6002E9CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6332DE4-42AA-48CA-83B3-DBBA6002E9CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6332DE4-42AA-48CA-83B3-DBBA6002E9CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38D10150-74CD-47E4-88BF-60CF257E3B96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38D10150-74CD-47E4-88BF-60CF257E3B96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38D10150-74CD-47E4-88BF-60CF257E3B96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38D10150-74CD-47E4-88BF-60CF257E3B96}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1C5822C3-82C1-4257-9927-E622D1D50360}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{38D10150-74CD-47E4-88BF-60CF257E3B96} = {B1D00F15-0030-4E03-B23C-D980D30E8E1D}
+	EndGlobalSection
+EndGlobal
