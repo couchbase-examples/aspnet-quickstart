@@ -32,6 +32,6 @@
     <Folder Include="ControllerTests\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Org.Quickstart.API\Org.Quickstart.API.csproj" />
+    <ProjectReference Include="..\Org.Quickstart.API\Org.Quickstart.API.csproj" />
   </ItemGroup>
 </Project>
