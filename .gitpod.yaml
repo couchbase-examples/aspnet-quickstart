@@ -1,5 +1,5 @@
 image:
-  file: .gitpod.https://gitpod.io/#https://github.com/couchbaselabs/couchbase-spring-petclinic.gitDockerfile
+  file: .gitpod.Dockerfile
 
 tasks:
 - name: Start Couchbase
