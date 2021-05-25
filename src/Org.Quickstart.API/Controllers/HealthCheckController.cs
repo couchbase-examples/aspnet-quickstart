@@ -15,7 +15,7 @@ namespace Org.Quickstart.API.Controllers
         [HttpGet]
         public string Index()
         {
-            return $"currentDate: DateTime.UtcNow";
+            return $"currentDate: {DateTime.UtcNow}";
         }
 
 
