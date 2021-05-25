@@ -2,7 +2,7 @@ FROM deniswsrosa/couchbase7.0.beta-gitpod
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive &&\ 
  apt-get install -y wget &&\
- apt-get install software-properties-common &&\
+ apt-get install -y software-properties-common &&\
  apt-get update &&\ 
  wget https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &&\
  dpkg -i packages-microsoft-prod.deb &&\ 
