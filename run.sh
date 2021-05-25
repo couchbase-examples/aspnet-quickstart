@@ -1,3 +1,3 @@
 #!/bin/bash
-cd src/Org.Quickstart/Org.Quickstart.API
+cd src/Org.Quickstart.API
 dotnet run 
