@@ -17,7 +17,5 @@ namespace Org.Quickstart.API.Controllers
         {
             return $"currentDate: {DateTime.UtcNow}";
         }
-
-
     }
 }
