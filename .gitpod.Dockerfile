@@ -1,8 +1,8 @@
 FROM deniswsrosa/couchbase7.0.beta-gitpod
 
-RUN sudo apt-get update && export DEBIAN_FRONTEND=noninteractive &&\ 
- sudo apt-get install -y wget &&\
- sudo wget https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &&\
- sudo dpkg -i packages-microsoft-prod.deb &&\ 
- sudo apt-get install -y apt-transport-https &&\
- sudo apt-get install -y dotnet-sdk-5.0
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive &&\ 
+ apt-get install -y wget &&\
+ wget https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &&\
+ dpkg -i packages-microsoft-prod.deb &&\ 
+ apt-get install -y apt-transport-https &&\
+ apt-get install -y dotnet-sdk-5.0
