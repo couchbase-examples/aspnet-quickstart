@@ -13,7 +13,7 @@ ports:
 - port: 5000
   onOpen: open-preview
 - port: 5001
-  onOpen: open-browser
+  onOpen: open-preview 
 - port: 8091
   onOpen: open-browser
 - port: 8092-10000
