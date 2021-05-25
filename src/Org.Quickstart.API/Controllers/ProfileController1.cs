@@ -81,6 +81,7 @@ namespace Org.Quickstart.API.Controllers
 		            var bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
 		            var collection = bucket.Collection(_couchbaseConfig.CollectionName);
 		            var profile = request.GetProfile();
+                    profile.Pid = Guid.NewGuid();
 		            await collection.InsertAsync(profile.Pid.ToString(), profile);
 
                     return Created($"/api/v1/profile1/{profile.Pid}", profile);
