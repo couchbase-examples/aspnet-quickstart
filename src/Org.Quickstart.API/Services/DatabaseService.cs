@@ -101,6 +101,7 @@ namespace Org.Quickstart.API.Services
 				//try to create index - if fails it probably already exists
 				try
 				{
+					await Task.Delay(5000);
 					var queries = new List<string> 
 					{ 
 						$"CREATE PRIMARY INDEX default_profile_index ON {_couchbaseConfig.BucketName}.{_couchbaseConfig.ScopeName}.{_couchbaseConfig.CollectionName}",

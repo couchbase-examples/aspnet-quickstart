@@ -90,10 +90,12 @@ namespace Org.Quickstart.API
 
 		        //setup swagger for debugging and testing APIs
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint(
-		            "/swagger/v1/swagger.json", 
-		            "Couchbase Quickstart API v1"
-		        ));
+                app.UseSwaggerUI(c => {
+                    c.SwaggerEndpoint(
+		                "/swagger/v1/swagger.json", 
+		                "Couchbase Quickstart API v1"); 
+                    c.RoutePrefix = string.Empty;
+                    });
             }
 
 	        if (_env.EnvironmentName == "Testing")
