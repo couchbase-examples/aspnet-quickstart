@@ -7,9 +7,6 @@ tasks:
 - name: Start app
   init: cd src/Org.Quickstart.API 
   command:  dotnet build && dotnet run 
-- name:  Run Tests 
-  init: cd src/Org.Quickstart.IntegrationTests/
-  command: dotnet build && dotnet test 
 
 # exposed ports
 ports:
