@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Couchbase;
@@ -100,11 +101,18 @@ namespace Org.Quickstart.API.Services
 				//try to create index - if fails it probably already exists
 				try
 				{
-					var createIndexQuery = $"CREATE INDEX profile_lower_firstName ON default:{_couchbaseConfig.BucketName}.{_couchbaseConfig.ScopeName}.{_couchbaseConfig.CollectionName}(lower(`firstName`));";
-					var result = await cluster.QueryAsync<dynamic>(createIndexQuery);
-					if (result.MetaData.Status != QueryStatus.Success)
+					var queries = new List<string> 
+					{ 
+						$"CREATE PRIMARY INDEX default_profile_index ON {_couchbaseConfig.BucketName}.{_couchbaseConfig.ScopeName}.{_couchbaseConfig.CollectionName}",
+						$"CREATE Primary INDEX on {_couchbaseConfig.BucketName}"
+					};
+					foreach (var query in queries)
 					{
-						throw new System.Exception("Error create index didn't return proper results");
+						var result = await cluster.QueryAsync<dynamic>(query);
+						if (result.MetaData.Status != QueryStatus.Success)
+						{
+							throw new System.Exception($"Error create index didn't return proper results for index {query}");
+						}
 					}
 				}
 				catch (IndexExistsException)
