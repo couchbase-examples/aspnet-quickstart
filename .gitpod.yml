@@ -4,8 +4,14 @@ image:
 tasks:
 - name: Start Couchbase
   command:  cd /opt/couchbase/ && ./start-cb.sh
+- name: Build App 
+  init: cd src/Org.Quickstart.API  
+  command: dotnet build 
+- name:  Run Tests 
+  init: cd src/Org.Quickstart.IntegrationTests 
+  command: dotnet tests 
 - name: Start app
-  init: cd src/Org.Quickstart.API && dotnet build 
+  init: cd src/Org.Quickstart.API 
   command: while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' -u Administrator:password localhost:8091/pools/default/buckets/user_profile)" != "200" ]]; do sleep 5; done && dotnet run 
 
 # exposed ports

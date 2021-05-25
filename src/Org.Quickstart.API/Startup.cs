@@ -14,7 +14,14 @@ namespace Org.Quickstart.API
     {
         private readonly IWebHostEnvironment _env;
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+         /// <summary>
+        /// dev origins used to fix CORS for local dev/qa debugging of site
+        /// </summary>
+        private readonly string _devSpecificOriginsName = "_devAllowSpecificOrigins";
+
+        public Startup(
+            IConfiguration configuration, 
+            IWebHostEnvironment env)
         {
             Configuration = configuration;
             _env = env;
@@ -25,6 +32,27 @@ namespace Org.Quickstart.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //05/25/2021
+            //fix for debugging with DEV and QA environments in GitPod
+            //DO NOT APPLY to UAT and PROD environments!!!
+            //https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-3.1
+            //
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: _devSpecificOriginsName,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("https://*.gitpod.io",
+                                                          "https://*.github.com",
+                                                          "http://localhost:5000",
+                                                          "https://localhost:5001")
+                                                          .AllowAnyHeader()
+                                                          .AllowAnyMethod()
+                                                          .AllowCredentials();
+                                  });
+            });
+
 	        //read in configuration to connect to the database
 	        services.Configure<CouchbaseConfig>(Configuration.GetSection("Couchbase"));
 
@@ -48,11 +76,17 @@ namespace Org.Quickstart.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
+        public void Configure(
+            IApplicationBuilder app, 
+            IWebHostEnvironment env, 
+            IHostApplicationLifetime appLifetime)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                //add cors policy
+                 app.UseCors(_devSpecificOriginsName);
 
 		        //setup swagger for debugging and testing APIs
                 app.UseSwagger();
@@ -62,7 +96,11 @@ namespace Org.Quickstart.API
 		        ));
             }
 
-	        if (_env.EnvironmentName == "Testing"){
+	        if (_env.EnvironmentName == "Testing")
+            {
+                //add cors policy
+                 app.UseCors(_devSpecificOriginsName);
+
 	            //setup the database once everything is setup and running integration tests need to make sure database is fully working before running,hence running Synchronously
 	            appLifetime.ApplicationStarted.Register(() => {
 		            var db = app.ApplicationServices.GetService<DatabaseService>();
