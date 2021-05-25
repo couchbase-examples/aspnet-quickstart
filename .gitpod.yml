@@ -11,7 +11,7 @@ tasks:
 # exposed ports
 ports:
 - port: 5000
-  onOpen: open-preview
+  onOpen: ignore 
 - port: 5001
   onOpen: open-preview 
 - port: 8091
