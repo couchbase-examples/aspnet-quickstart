@@ -147,7 +147,7 @@ namespace Org.Quickstart.API.Controllers
         }
 
         [HttpGet]
-	    [Route("/api/v1/profiles1")]
+	    [Route("/api/v1/profiles")]
         [SwaggerOperation(OperationId = "UserProfile-List", Summary = "Search for user profiles", Description = "Get a list of user profiles from the request")]
         [SwaggerResponse(200, "Returns the list of user profiles")]
         [SwaggerResponse(500, "Returns an internal error")]
