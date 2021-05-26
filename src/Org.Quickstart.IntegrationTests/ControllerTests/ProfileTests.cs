@@ -16,8 +16,8 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
         : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         private readonly HttpClient _client;
-		private readonly string baseHostname = "/api/v1/profile1";
-		private readonly string baseHostnameSearch = "/api/v1/profiles1";
+		private readonly string baseHostname = "/api/v1/profile";
+		private readonly string baseHostnameSearch = "/api/v1/profiles";
 
         public ProfileTests(CustomWebApplicationFactory<Startup> factory)
         {
