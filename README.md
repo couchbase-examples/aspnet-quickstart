@@ -9,7 +9,7 @@
 To run this prebuilt project, you will need:
 
 - Couchbase 7 Installed
-- link:https://dotnet.microsoft.com/download/dotnet/5.0[.NET SDK v5+] installed 
+- [.NET SDK v5+](https://dotnet.microsoft.com/download/dotnet/5.0) installed 
 - Code Editor installed (Visual Studio Professional, Visual Studio for Mac, or Visual Studio Code)
 
 ### Install Dependencies 
@@ -151,7 +151,7 @@ public Profile GetProfile()
 ```
 ~from Models/ProfileCreateRequestCommand.cs~
 
-The `Pid` that we’re saving into the account object is a unique key.  Rather than saving the password in the account object as plain text, we hash it with link:https://www.nuget.org/packages/BCrypt.Net-Next/[Bcrypt] in the setter of the Profile object:
+The `Pid` that we’re saving into the account object is a unique key.  Rather than saving the password in the account object as plain text, we hash it with [Bcrypt](https://www.nuget.org/packages/BCrypt.Net-Next/) in the setter of the Profile object:
 
 ```csharp
 private string _password;
@@ -169,7 +169,7 @@ public string Password
 ```
 ~from Models/Profile.cs~
 
-Our `profile` document is ready to be persisted to the database.  We create an async call to the `collection` using the `InsertAsync` method and then return the document saved and the result all as part of the same object back to the user.  `InsertAsync` is a link:https://docs.couchbase.com/dotnet-sdk/current/howtos/kv-operations.html[basic key-value operation].  Key-value operations are a powerful way to work with documents in a Couchbase database.
+Our `profile` document is ready to be persisted to the database.  We create an async call to the `collection` using the `InsertAsync` method and then return the document saved and the result all as part of the same object back to the user.  `InsertAsync` is a [basic key-value operation](https://docs.couchbase.com/dotnet-sdk/current/howtos/kv-operations.html).  Key-value operations are a powerful way to work with documents in a Couchbase database.
 
 ### GET a Profile by Key
 
@@ -276,7 +276,7 @@ We only need the profile ID from the user to either delete using a basic key-val
 
 ### GET Profiles by Searching
 
-link:https://docs.couchbase.com/dotnet-sdk/current/howtos/n1ql-queries-with-sdk.html[N1QL] is a powerful query language based on SQL, but designed for structed and flexible JSON documents. We will use a N1QL query to search for profiles with Skip, Limit, and Search options.  
+[N1QL](https://docs.couchbase.com/dotnet-sdk/current/howtos/n1ql-queries-with-sdk.html) is a powerful query language based on SQL, but designed for structed and flexible JSON documents. We will use a N1QL query to search for profiles with Skip, Limit, and Search options.  
 
 ```csharp
 [HttpGet]
@@ -306,7 +306,7 @@ public async Task<IActionResult> List([FromQuery] ProfileRequestQuery request)
 }
 ```
 
-This endpoint is different from all of the others because it makes the N1QL query rather than a key-value operation. This means more overhead because the query engine is involved. We did create an link:https://docs.couchbase.com/server/current/learn/services-and-indexes/indexes/indexing-and-query-perf.html[index] specific for this query, so it should be performant.
+This endpoint is different from all of the others because it makes the N1QL query rather than a key-value operation. This means more overhead because the query engine is involved. We did create an [index](https://docs.couchbase.com/server/current/learn/services-and-indexes/indexes/indexing-and-query-perf.html) specific for this query, so it should be performant.
 
 First, the method signature uses the [FromQuery] annotation to destructure the query to get the individual `skip`, `limit`, and `firstNameSearch` values and store them in the ProfileRequestQuery object. 
 
@@ -325,7 +325,7 @@ At this point the application is ready and you can run it:
 ```sh
 dotnet run 
 ```
-You can launch your browser and go to the link:https://localhost:5001/swagger/index.html[Swagger start page].
+You can launch your browser and go to the [Swagger start page](https://localhost:5001/swagger/index.html).
 
 
 ## Running The Tests
@@ -352,4 +352,4 @@ A fully list of nuget packages are referenced below:
 
 ## Conclusion
 
-Setting up a basic REST API in ASP.NET with Couchbase is fairly simple, this project when run with Couchbase Server 7 installed creates a bucket in Couchbase, an index for our parameterized link:https://docs.couchbase.com/dotnet-sdk/current/howtos/n1ql-queries-with-sdk.html[N1QL query], and showcases basic CRUD operations needed in most applications.
+Setting up a basic REST API in ASP.NET with Couchbase is fairly simple, this project when run with Couchbase Server 7 installed creates a bucket in Couchbase, an index for our parameterized [N1QL query](https://docs.couchbase.com/dotnet-sdk/current/howtos/n1ql-queries-with-sdk.html), and showcases basic CRUD operations needed in most applications.
