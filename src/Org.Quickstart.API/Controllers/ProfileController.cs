@@ -151,12 +151,12 @@ namespace Org.Quickstart.API.Controllers
         [SwaggerOperation(OperationId = "UserProfile-List", Summary = "Search for user profiles", Description = "Get a list of user profiles from the request")]
         [SwaggerResponse(200, "Returns the list of user profiles")]
         [SwaggerResponse(500, "Returns an internal error")]
-        public async Task<IActionResult> List([FromQuery] ProfileRequestQuery request)
+        public async Task<IActionResult> List([FromQuery] ProfileListRequestQuery request)
         {
             try
             {
                 var cluster = await _clusterProvider.GetClusterAsync();
-                var query = $"SELECT p.* FROM  {_couchbaseConfig.BucketName}.{_couchbaseConfig.ScopeName}.{_couchbaseConfig.CollectionName} p WHERE lower(p.firstName) LIKE '%{request.FirstNameSearch.ToLower()}%' LIMIT {request.Limit} OFFSET {request.Skip}";
+                var query = $"SELECT p.* FROM  {_couchbaseConfig.BucketName}.{_couchbaseConfig.ScopeName}.{_couchbaseConfig.CollectionName} p WHERE lower(p.firstName) LIKE '%{request.Search.ToLower()}%' OR lower(p.lastName) LIKE '%{request.Search.ToLower()}%' LIMIT {request.Limit} OFFSET {request.Skip}";
 
                 var results = await cluster.QueryAsync<Profile>(query);
                 var items = await results.Rows.ToListAsync<Profile>();

@@ -124,7 +124,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 			var newUserResult = JsonConvert.DeserializeObject<Profile>(jsonResults);
 
 			//get the user from the main API
-			var getResponse = await _client.GetAsync($"{baseHostnameSearch}?FirstNameSearch={userProfile.FirstName}&Skip=0&Limit=5");
+			var getResponse = await _client.GetAsync($"{baseHostnameSearch}?Search={userProfile.FirstName}&Skip=0&Limit=5");
 			Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
 			var getJsonResult = await getResponse.Content.ReadAsStringAsync();
 			var getUserResult = JsonConvert.DeserializeObject<List<Profile>>(getJsonResult);
