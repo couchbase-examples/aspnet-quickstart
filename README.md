@@ -5,7 +5,7 @@
 
 [![Try it now!](https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=aspnet-quickstart-repo&source=github)](https://gitpod.io/#https://github.com/couchbase-examples/aspnet-quickstart)
 
-Full documentation can be found on the [Couchbase Developer Portal](https://developer.couchbase.com/tutorial-quickstart-csharp-aspnet/).
+Full documentation can be found on the [Couchbase Developer Portal](https://developer.couchbase.com/tutorial-quickstart-csharp-aspnet/){:target="_blank"}.
 ## Prerequisites
 To run this prebuilt project, you will need:
 
