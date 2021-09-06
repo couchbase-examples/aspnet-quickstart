@@ -13,6 +13,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive &&\
  dpkg -i packages-microsoft-prod.deb &&\ 
  apt-add-repository https://packages.microsoft.com/ubuntu/20.04/prod &&\
  apt-get install -y apt-transport-https &&\
+ apt-get update &&\
  apt-get install -y dotnet-sdk-5.0 sudo
 
  RUN addgroup --gid 33333 gitpod && \
