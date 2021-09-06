@@ -20,5 +20,5 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive &&\
      usermod -a -G gitpod,couchbase,sudo gitpod && \
      echo 'gitpod ALL=(ALL) NOPASSWD:ALL'>> /etc/sudoers
     
-COPY startcb.sh /opt/couchbase/bin/startcb.sh
+#COPY startcb.sh /opt/couchbase/bin/startcb.sh
 USER gitpod
