@@ -12,7 +12,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive &&\
  wget https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &&\
  dpkg -i packages-microsoft-prod.deb &&\ 
  apt-add-repository https://packages.microsoft.com/ubuntu/20.04/prod &&\
- apt-add-repository ppa:teejee2008/ppa sudo &&\
+ apt-add-repository ppa:teejee2008/ppa &&\
  apt-get update  sudo &&\
  apt-get install ukuu sudo &&\
  apt-get install -y apt-transport-https &&\
