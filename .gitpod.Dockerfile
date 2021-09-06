@@ -16,7 +16,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive &&\
  apt-get update  sudo &&\
  apt-get install ukuu sudo &&\
  apt-get install -y apt-transport-https &&\
- apt-get install -y dotnet-sdk-5.0 
+ apt-get install -y dotnet-sdk-5.0 sudo
 
  RUN addgroup --gid 33333 gitpod && \
      useradd --no-log-init --create-home --home-dir /home/gitpod --shell /bin/bash --uid 33333 --gid 33333 gitpod && \
