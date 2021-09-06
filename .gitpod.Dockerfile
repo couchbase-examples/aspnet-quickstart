@@ -13,10 +13,10 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive &&\
  dpkg -i packages-microsoft-prod.deb &&\ 
  apt-add-repository https://packages.microsoft.com/ubuntu/20.04/prod &&\
  apt-get install -y apt-transport-https &&\
- apt-add-repository ppa:teejee2008/ppa\
- apt-get update\
- apt-get install ukuu\
- apt-get install -y dotnet-sdk-5.0 sudo 
+ apt-add-repository ppa:teejee2008/ppa &&\
+ apt-get update &&\
+ apt-get install ukuu &&\
+ apt-get install -y dotnet-sdk-5.0 
 
  RUN addgroup --gid 33333 gitpod && \
      useradd --no-log-init --create-home --home-dir /home/gitpod --shell /bin/bash --uid 33333 --gid 33333 gitpod && \
