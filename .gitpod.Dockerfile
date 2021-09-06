@@ -13,7 +13,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive &&\
  dpkg -i packages-microsoft-prod.deb &&\ 
  apt-add-repository https://packages.microsoft.com/ubuntu/20.04/prod &&\
  apt-add-repository ppa:teejee2008/ppa &&\
- apt-get update  sudo &&\
+ apt-get update  &&\
  apt-get install ukuu sudo &&\
  apt-get install -y apt-transport-https &&\
  apt-get install -y dotnet-sdk-5.0 sudo
