@@ -6,8 +6,8 @@ tasks:
   command:  cd /opt/couchbase/ && ./start-cb.sh
 - name: Log use
   command: curl -s 'https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=aspnet-quickstart-repo&source=gitpod' > /dev/null
-- name: Publish
-  command: cd /src/Org.Quickstart.API && dotnet publish -c release --self-contained --runtime linux-x64
+- name: Publish app
+  command: cd src/Org.Quickstart.API && dotnet publish -c release --self-contained --runtime linux-x64
 - name: Start app
   init: cd src/Org.Quickstart.API 
   command:  while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' -u Administrator:password localhost:8091/pools/default/buckets/)" != "200" ]]; do sleep 5; done && dotnet build && dotnet run 
