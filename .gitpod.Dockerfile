@@ -9,5 +9,3 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive &&\
  apt-add-repository https://packages.microsoft.com/ubuntu/20.04/prod &&\
  apt-get install -y apt-transport-https &&\
  apt-get install -y dotnet-sdk-5.0
-#COPY startcb.sh /opt/couchbase/bin/startcb.sh
-USER gitpod
