@@ -62,8 +62,9 @@ A fully list of nuget packages are referenced below:
 ```xml
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.1.4" />
+     <PackageReference Include="CouchbaseNetClient" Version="3.2.5" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
-    <PackageReference Include="Couchbase.Extensions.DependencyInjection" Version="3.1.5" />
+    <PackageReference Include="Couchbase.Extensions.DependencyInjection" Version="3.2.5" />
 ```
 
 ## Conclusion
