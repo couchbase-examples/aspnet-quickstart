@@ -107,6 +107,7 @@ namespace Org.Quickstart.API
 	            appLifetime.ApplicationStarted.Register(() => {
 		            var db = app.ApplicationServices.GetService<DatabaseService>();
 		            db.CreateBucketCollection().RunSynchronously();
+		            db.CreateIndex().RunSynchronously();
 	            });
 		    } else {
 	            //setup the database once everything is setup and running
