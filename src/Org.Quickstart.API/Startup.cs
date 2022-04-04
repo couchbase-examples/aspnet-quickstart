@@ -115,7 +115,7 @@ namespace Org.Quickstart.API
 
                     /* *** WARNING:  if you are using Capella, YOU MUST COMMMENT OUT THE NEXT LINE 
                     Capellta users must create the bucket and collection before running this */
-                    //await db.CreateBucketCollection();
+                    await db.CreateBucketCollection();
 
                     //creates the indexes for our SQL++ query
                     await db.CreateIndex();
