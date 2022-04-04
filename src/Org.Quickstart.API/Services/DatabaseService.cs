@@ -12,6 +12,7 @@ using Couchbase.Query;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Org.Quickstart.API.Models;
+using System.Net;
 
 namespace Org.Quickstart.API.Services
 {
@@ -35,7 +36,39 @@ namespace Org.Quickstart.API.Services
 	    
         }
 
-	    public async Task SetupDatabase()
+		public async Task CreateIndex()
+		{
+			ICluster cluster = null;
+
+			//try to create index - if fails it probably already exists
+			try
+			{ 
+				cluster = await _clusterProvider.GetClusterAsync();
+				if (cluster != null)
+				{
+					await Task.Delay(5000);
+					var queries = new List<string>
+					{
+						$"CREATE PRIMARY INDEX default_profile_index ON {_couchbaseConfig.BucketName}.{_couchbaseConfig.ScopeName}.{_couchbaseConfig.CollectionName}",
+						$"CREATE Primary INDEX on {_couchbaseConfig.BucketName}"
+					};
+					foreach (var query in queries)
+					{
+						var result = await cluster.QueryAsync<dynamic>(query);
+						if (result.MetaData.Status != QueryStatus.Success)
+						{
+							throw new System.Exception($"Error create index didn't return proper results for index {query}");
+						}
+					}
+				}
+			}
+			catch (IndexExistsException)
+			{
+				_logger.LogWarning($"Collection {_couchbaseConfig.CollectionName} already exists in {_couchbaseConfig.BucketName}.");
+			}
+		}
+
+	    public async Task CreateBucketCollection()
 	    {
 			ICluster cluster = null;
 			IBucket bucket = null;
@@ -43,7 +76,8 @@ namespace Org.Quickstart.API.Services
 			//try to create bucket, if exists will just fail which is fine
 			try 
 			{
-				cluster = await _clusterProvider.GetClusterAsync();	
+
+				cluster = await _clusterProvider.GetClusterAsync();
 				if (cluster != null)
 				{
 					var bucketSettings = new BucketSettings { 
@@ -62,6 +96,14 @@ namespace Org.Quickstart.API.Services
 			catch (BucketExistsException)
 			{
 				_logger.LogWarning($"Bucket {_couchbaseConfig.BucketName} already exists");
+			}
+			catch (CouchbaseException ce) 
+			{ 
+				_logger.LogError(ce.Message);
+			}
+			catch (System.Exception ex) 
+			{
+				_logger.LogError(ex.Message);
 			}
 
 			bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
@@ -96,29 +138,6 @@ namespace Org.Quickstart.API.Services
 				catch (HttpRequestException)
 				{
 					_logger.LogWarning($"HttpRequestExcecption when creating collection  {_couchbaseConfig.CollectionName}");
-				}
-
-				//try to create index - if fails it probably already exists
-				try
-				{
-					await Task.Delay(5000);
-					var queries = new List<string> 
-					{ 
-						$"CREATE PRIMARY INDEX default_profile_index ON {_couchbaseConfig.BucketName}.{_couchbaseConfig.ScopeName}.{_couchbaseConfig.CollectionName}",
-						$"CREATE Primary INDEX on {_couchbaseConfig.BucketName}"
-					};
-					foreach (var query in queries)
-					{
-						var result = await cluster.QueryAsync<dynamic>(query);
-						if (result.MetaData.Status != QueryStatus.Success)
-						{
-							throw new System.Exception($"Error create index didn't return proper results for index {query}");
-						}
-					}
-				}
-				catch (IndexExistsException)
-				{
-					_logger.LogWarning($"Collection {_couchbaseConfig.CollectionName} already exists in {_couchbaseConfig.BucketName}.");
 				}
 			}
 			else 
