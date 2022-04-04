@@ -12,7 +12,6 @@ using Couchbase.Query;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Org.Quickstart.API.Models;
-using System.Net;
 
 namespace Org.Quickstart.API.Services
 {
@@ -67,16 +66,63 @@ namespace Org.Quickstart.API.Services
 				_logger.LogWarning($"Collection {_couchbaseConfig.CollectionName} already exists in {_couchbaseConfig.BucketName}.");
 			}
 		}
+		public async Task CreateCollection() 
+		{
+			IBucket bucket = null;
 
-	    public async Task CreateBucketCollection()
+			try
+			{
+				bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
+			}
+			catch (System.Exception)
+			{ 
+				_logger.LogError($"Couldn't connect to bucket {_couchbaseConfig.BucketName}, please check username, password, and connection string.");
+
+			}
+			if (bucket != null)
+			{
+				if (!_couchbaseConfig.ScopeName.StartsWith("_"))
+				{
+					//try to create scope - if fails it's ok we are probably using default
+					try
+					{
+						await bucket.Collections.CreateScopeAsync(_couchbaseConfig.CollectionName);
+					}
+					catch (ScopeExistsException)
+					{
+						_logger.LogWarning($"Scope {_couchbaseConfig.ScopeName} already exists, probably default");
+					}
+					catch (HttpRequestException)
+					{
+						_logger.LogWarning($"HttpRequestExcecption when creating Scope {_couchbaseConfig.ScopeName}");
+					}
+				}
+
+				//try to create collection - if fails it's ok the collection probably exists
+				try
+				{
+					await bucket.Collections.CreateCollectionAsync(new CollectionSpec(_couchbaseConfig.ScopeName, _couchbaseConfig.CollectionName));
+				}
+				catch (CollectionExistsException)
+				{
+					_logger.LogWarning($"Collection {_couchbaseConfig.CollectionName} already exists in {_couchbaseConfig.BucketName}.");
+				}
+				catch (HttpRequestException)
+				{
+					_logger.LogWarning($"HttpRequestExcecption when creating collection  {_couchbaseConfig.CollectionName}");
+				}
+			}
+			else
+				throw new System.Exception("Can't retreive bucket.");
+		}
+
+	    public async Task CreateBucket()
 	    {
 			ICluster cluster = null;
-			IBucket bucket = null;
 
 			//try to create bucket, if exists will just fail which is fine
 			try 
 			{
-
 				cluster = await _clusterProvider.GetClusterAsync();
 				if (cluster != null)
 				{
@@ -105,43 +151,6 @@ namespace Org.Quickstart.API.Services
 			{
 				_logger.LogError(ex.Message);
 			}
-
-			bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
-			if (bucket != null) 
-			{
-				if (!_couchbaseConfig.ScopeName.StartsWith("_"))
-				{
-					//try to create scope - if fails it's ok we are probably using default
-					try
-					{
-						await bucket.Collections.CreateScopeAsync(_couchbaseConfig.CollectionName);
-					}
-					catch(ScopeExistsException)
-					{
-						_logger.LogWarning($"Scope {_couchbaseConfig.ScopeName} already exists, probably default");
-					}
-					catch (HttpRequestException)
-					{
-						_logger.LogWarning($"HttpRequestExcecption when creating Scope {_couchbaseConfig.ScopeName}");
-					}
-				}
-
-				//try to create collection - if fails it's ok the collection probably exists
-				try 
-				{
-					await bucket.Collections.CreateCollectionAsync(new CollectionSpec(_couchbaseConfig.ScopeName, _couchbaseConfig.CollectionName));
-				}
-				catch (CollectionExistsException)
-				{
-					_logger.LogWarning($"Collection {_couchbaseConfig.CollectionName} already exists in {_couchbaseConfig.BucketName}.");
-				}
-				catch (HttpRequestException)
-				{
-					_logger.LogWarning($"HttpRequestExcecption when creating collection  {_couchbaseConfig.CollectionName}");
-				}
-			}
-			else 
-				throw new System.Exception("Can't retreive bucket.");
 	    }
     }
 }

@@ -106,7 +106,7 @@ namespace Org.Quickstart.API
 	            //setup the database once everything is setup and running integration tests need to make sure database is fully working before running,hence running Synchronously
 	            appLifetime.ApplicationStarted.Register(() => {
 		            var db = app.ApplicationServices.GetService<DatabaseService>();
-		            db.CreateBucketCollection().RunSynchronously();
+		            db.CreateBucket().RunSynchronously();
 		            db.CreateIndex().RunSynchronously();
 	            });
 		    } else {
@@ -114,10 +114,12 @@ namespace Org.Quickstart.API
 	            appLifetime.ApplicationStarted.Register(async () => {
 		            var db = app.ApplicationServices.GetService<DatabaseService>();
 
-                    /* *** WARNING:  if you are using Capella, YOU MUST COMMMENT OUT THE NEXT LINE 
-                    Capellta users must create the bucket and collection before running this */
-                    await db.CreateBucketCollection();
+                    //warning - we assume the bucket has already been created
+                    //if you don't create it you will get errors
 
+                    //create collection to store documents in
+                    await db.CreateCollection();
+                    
                     //creates the indexes for our SQL++ query
                     await db.CreateIndex();
 	            });
