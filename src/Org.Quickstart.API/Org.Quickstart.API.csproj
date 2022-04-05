@@ -5,14 +5,15 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Org.Quickstart.API' " />
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
-    <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.3.0" />
-    <PackageReference Include="CouchbaseNetClient" Version="3.2.5" />
+    <PackageReference Include="CouchbaseNetClient" Version="3.2.8" />
     <PackageReference Include="Couchbase.Extensions.DependencyInjection" Version="3.2.8" />
   </ItemGroup>
 

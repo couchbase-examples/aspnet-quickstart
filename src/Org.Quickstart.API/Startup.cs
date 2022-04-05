@@ -1,4 +1,4 @@
-using Couchbase.Extensions.DependencyInjection;
+﻿using Couchbase.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -106,13 +106,22 @@ namespace Org.Quickstart.API
 	            //setup the database once everything is setup and running integration tests need to make sure database is fully working before running,hence running Synchronously
 	            appLifetime.ApplicationStarted.Register(() => {
 		            var db = app.ApplicationServices.GetService<DatabaseService>();
-		            db.SetupDatabase().RunSynchronously();
+		            db.CreateBucket().RunSynchronously();
+		            db.CreateIndex().RunSynchronously();
 	            });
 		    } else {
 	            //setup the database once everything is setup and running
 	            appLifetime.ApplicationStarted.Register(async () => {
 		            var db = app.ApplicationServices.GetService<DatabaseService>();
-		            await db.SetupDatabase();
+
+                    //warning - we assume the bucket has already been created
+                    //if you don't create it you will get errors
+
+                    //create collection to store documents in
+                    await db.CreateCollection();
+                    
+                    //creates the indexes for our SQL++ query
+                    await db.CreateIndex();
 	            });
 		    }
 
