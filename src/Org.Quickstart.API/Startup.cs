@@ -104,14 +104,19 @@ namespace Org.Quickstart.API
                 //add cors policy
                  app.UseCors(_devSpecificOriginsName);
 
-	            //setup the database once everything is setup and running integration tests need to make sure database is fully working before running,hence running Synchronously
-	            appLifetime.ApplicationStarted.Register(() => {
+	            //setup the database once everything is setup and running integration tests need to make sure database is fully working before running,hence running 
+	            appLifetime.ApplicationStarted.Register(async () => {
 		            var db = app.ApplicationServices.GetService<DatabaseService>();
-                    //try to each exception to see if we create indexes
-                    try {
-                        db.CreateCollection().RunSynchronously();
-                    } catch (System.Exception) { }
-                    db.CreateIndex().RunSynchronously();
+
+                    //warning - we assume the bucket has already been created
+                    //if you don't create it you will get errors
+
+                    //create collection to store documents in
+                    try { await db.CreateCollection().ConfigureAwait(false); }
+                    catch {}
+                    
+                    //creates the indexes for our SQL++ query
+                    await db.CreateIndex().ConfigureAwait(false);
 	            });
 		    } else {
 	            //setup the database once everything is setup and running
