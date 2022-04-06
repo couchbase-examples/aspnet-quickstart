@@ -107,12 +107,8 @@ namespace Org.Quickstart.API
 	            //setup the database once everything is setup and running integration tests need to make sure database is fully working before running,hence running Synchronously
 	            appLifetime.ApplicationStarted.Register(() => {
 		            var db = app.ApplicationServices.GetService<DatabaseService>();
-                    Task.Run(async () => {
-                        await db.CreateCollection();
-			        }).ConfigureAwait(false);
-                    Task.Run(async () => {
-                        await db.CreateIndex();
-                    }).ConfigureAwait(false);
+                    db.CreateCollection().RunSynchronously();
+                    db.CreateIndex().RunSynchronously();
 	            });
 		    } else {
 	            //setup the database once everything is setup and running

@@ -41,19 +41,18 @@ jobs:
         wget -O /dev/null  http://localhost:8091/ && echo "DONE" || (echo "FAIL" && panic)
 
         echo "**Setting up CB Services**"
-        curl  -v -X POST http://localhost:8091/node/controller/setupServices -d 'services=kv%2Cn1ql%2Cindex'
-        curl  -v -X POST http://localhost:8091/pools/default -d 'memoryQuota=1024' -d 'indexMemoryQuota=512'
-
-        echo "**Creating CB Administrator Account**"
-        curl  -u Administrator:password -v -X POST http://localhost:8091/settings/web -d 'password=password&username=Administrator&port=SAME'
+        /opt/couchbase/bin/couchbase-cli cluster-init -c 127.0.0.1 \
+        --cluster-username Administrator \
+        --cluster-password password \
+        --services data,index,query \
+        --cluster-ramsize 1024 \
+        --cluster-index-ramsize 256 
 
         echo "**Creating Bucket user_profile**"
          curl -v -X POST http://localhost:8091/pools/default/buckets \
           -u Administrator:password \
           -d name=user_profile \
-          -d bucketType=couchbase\
           -d ramQuotaMB=512 \
-          -d durabilityMinLevel=none
 
         echo "**Creating Indexes**" 
         curl  -u Administrator:password -v -X POST http://localhost:8091/settings/indexes -d 'storageMode=memory_optimized'
