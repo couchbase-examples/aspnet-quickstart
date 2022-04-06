@@ -41,13 +41,13 @@ jobs:
         printf "Waiting for CB startup..."
         wget -O /dev/null  http://localhost:8091/ && echo "DONE" || (echo "FAIL" && panic)
         curl  -v -X POST http://localhost:8091/node/controller/setupServices -d 'services=kv%2Cn1ql%2Cindex'
-        curl  -v -X POST http://localhost:8091/pools/default -d 'memoryQuota=256' -d 'indexMemoryQuota=256'
+        curl  -v -X POST http://localhost:8091/pools/default -d 'memoryQuota=1024' -d 'indexMemoryQuota=512'
         curl  -u Administrator:password -v -X POST http://localhost:8091/settings/web -d 'password=password&username=Administrator&port=SAME'
          curl -v -X POST http://localhost:8091/pools/default/buckets \
           -u Administrator:password \
           -d name=user_profile \
           -d bucketType=couchbase\
-          -d ramQuotaMB=1024 \
+          -d ramQuotaMB=512 \
           -d durabilityMinLevel=majorityAndPersistActive
         curl  -u Administrator:password -v -X POST http://localhost:8091/settings/indexes -d 'storageMode=memory_optimized'
         curl  -u Administrator:password -v -X GET http://localhost:8091/pools/default | jq '.' | grep hostname
