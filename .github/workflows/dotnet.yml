@@ -1,16 +1,15 @@
-name: .NET
+name: ASP.NET
 on:
   push:
   pull_request:
   workflow_dispatch:
   schedule:
   - cron: "0 0 * * 0"
-
+env:
+  ASPNETCORE_ENVIRONMENT: "Testing"
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Check Memory Free
