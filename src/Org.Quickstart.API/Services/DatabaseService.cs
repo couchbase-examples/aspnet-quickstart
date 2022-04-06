@@ -53,9 +53,11 @@ namespace Org.Quickstart.API.Services
 					};
 					foreach (var query in queries)
 					{
+						_logger.LogInformation( "**INFO** Trying to create Indexes...");
 						var result = await cluster.QueryAsync<dynamic>(query);
 						if (result.MetaData.Status != QueryStatus.Success)
 						{
+							_logger.LogError("**ERROR** Couldn't create index required with {Query}", query);
 							throw new System.Exception($"Error create index didn't return proper results for index {query}");
 						}
 					}
@@ -80,7 +82,7 @@ namespace Org.Quickstart.API.Services
 			}
 			catch (System.Exception)
 			{ 
-				_logger.LogError("Couldn't connect to bucket {BucketName} with username: <{Username}> and password: <{Password}>",
+				_logger.LogError("**ERROR**  Couldn't connect to bucket {BucketName} with username: <{Username}> and password: <{Password}>",
 					_couchbaseConfig.BucketName,
 					_couchbaseConfig.Username,
 					_couchbaseConfig.Password);
