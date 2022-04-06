@@ -52,10 +52,14 @@ jobs:
           -d ramQuotaMB=512 \
 
         echo "**Creating Collection**" 
-        curl  -v -X POST http://localhost:8091/pools/default/buckets/user_profile/scopes/_default/collections -d 'name=profile'  
+        curl  -v -X POST http://localhost:8091/pools/default/buckets/user_profile/scopes/_default/collections \
+        -u Administrator:password \
+        -d 'name=profile'  
 
         echo "**Creating Indexes**" 
-        curl  -u Administrator:password -v -X POST http://localhost:8091/settings/indexes -d 'storageMode=memory_optimized'
+        curl  -v -X POST http://localhost:8091/settings/indexes \
+        -u Administrator:password \
+        -d 'storageMode=memory_optimized'
 
         sleep 5
         curl -v http://localhost:8093/query/service \
