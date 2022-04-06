@@ -47,7 +47,7 @@ jobs:
           -d name=user_profile \
           -d bucketType=couchbase\
           -d ramQuotaMB=512 \
-          -d durabilityMinLevel=majorityAndPersistActive
+          -d durabilityMinLevel=None
         curl  -u Administrator:password -v -X POST http://localhost:8091/settings/indexes -d 'storageMode=memory_optimized'
         curl  -u Administrator:password -v -X GET http://localhost:8091/pools/default | jq '.' | grep hostname
     - name: Setup .NET
