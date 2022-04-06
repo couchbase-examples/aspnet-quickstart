@@ -40,25 +40,25 @@ jobs:
         printf "Waiting for CB startup..."
         wget -O /dev/null  http://localhost:8091/ && echo "DONE" || (echo "FAIL" && panic)
 
-        printf "**Setting up CB Services**"
+        echo "**Setting up CB Services**"
         curl  -v -X POST http://localhost:8091/node/controller/setupServices -d 'services=kv%2Cn1ql%2Cindex'
         curl  -v -X POST http://localhost:8091/pools/default -d 'memoryQuota=1024' -d 'indexMemoryQuota=512'
 
-        printf "**Creating CB Administrator Account**"
+        echo "**Creating CB Administrator Account**"
         curl  -u Administrator:password -v -X POST http://localhost:8091/settings/web -d 'password=password&username=Administrator&port=SAME'
 
-        printf "**Creating Bucket user_profile**"
+        echo "**Creating Bucket user_profile**"
          curl -v -X POST http://localhost:8091/pools/default/buckets \
           -u Administrator:password \
           -d name=user_profile \
           -d bucketType=couchbase\
           -d ramQuotaMB=512 \
-          -d durabilityMinLevel=None
+          -d durabilityMinLevel=none
 
-        printf "**Creating Indexes**" 
+        echo "**Creating Indexes**" 
         curl  -u Administrator:password -v -X POST http://localhost:8091/settings/indexes -d 'storageMode=memory_optimized'
 
-        printf "**Creating CB Server Info**" 
+        echo "**Creating CB Server Info**" 
         curl  -u Administrator:password -v -X GET http://localhost:8091/pools/default | jq '.' | grep hostname
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
