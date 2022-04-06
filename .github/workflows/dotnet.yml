@@ -1,7 +1,6 @@
 name: ASP.NET
 on:
   push:
-  pull_request:
   workflow_dispatch:
   schedule:
   - cron: "0 0 * * 0"
@@ -41,7 +40,7 @@ jobs:
         wget -O /dev/null  http://localhost:8091/ && echo "DONE" || (echo "FAIL" && panic)
         curl  -v -X POST http://localhost:8091/node/controller/setupServices -d 'services=kv%2Cn1ql%2Cindex'
         curl  -v -X POST http://localhost:8091/pools/default -d 'memoryQuota=1024' -d 'indexMemoryQuota=512'
-        curl  -u Administrator:password -v -X POST http://localhost:8091/settings/web -d 'password=P@$$w0rd12&username=admin&port=SAME'
+        curl  -u admin:P@$$w0rd12 -v -X POST http://localhost:8091/settings/web -d 'password=P@$$w0rd12&username=admin&port=SAME'
          curl -v -X POST http://localhost:8091/pools/default/buckets \
           -u admin:P@$$w0rd12 \
           -d name=user_profile \
