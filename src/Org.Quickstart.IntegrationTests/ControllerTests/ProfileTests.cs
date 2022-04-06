@@ -113,6 +113,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 		[Fact]
 		public async Task GetProfileSearchTestAsync()
 		{
+			await Task.Delay(10000);
 			//create user
 			var userProfile = GetProfile();
 			var newUser = JsonConvert.SerializeObject(userProfile);

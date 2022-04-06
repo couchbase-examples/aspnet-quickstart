@@ -42,10 +42,10 @@ namespace Org.Quickstart.API.Services
 			try
 			{ 
 				_logger.LogInformation( "**INFO** Trying to create Indexes...");
-				cluster = await _clusterProvider.GetClusterAsync();
+				cluster = await _clusterProvider.GetClusterAsync().ConfigureAwait(false);
+				_logger.LogInformation("**INFO** Create Indexes - Cluster returned.");
 				if (cluster != null)
 				{
-					await Task.Delay(5000);
 					var queries = new List<string>
 					{
 						$"CREATE PRIMARY INDEX default_profile_index ON {_couchbaseConfig.BucketName}.{_couchbaseConfig.ScopeName}.{_couchbaseConfig.CollectionName}",
@@ -54,7 +54,7 @@ namespace Org.Quickstart.API.Services
 					foreach (var query in queries)
 					{
 						_logger.LogInformation( "**INFO** Running Create Index query: {query}", query);
-						var result = await cluster.QueryAsync<dynamic>(query);
+						var result = await cluster.QueryAsync<dynamic>(query).ConfigureAwait(false);
 						if (result.MetaData.Status != QueryStatus.Success)
 						{
 							_logger.LogError("**ERROR** Couldn't create index required with {Query}", query);
@@ -69,6 +69,10 @@ namespace Org.Quickstart.API.Services
 			catch (IndexExistsException)
 			{
 				_logger.LogWarning($"Collection {_couchbaseConfig.CollectionName} already exists in {_couchbaseConfig.BucketName}.");
+			}
+			catch (System.Exception ex) 
+			{ 
+					_logger.LogError("**ERROR** {Message}", ex.Message);
 			}
 		}
 		public async Task CreateCollection() 
