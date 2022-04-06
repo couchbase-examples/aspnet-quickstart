@@ -112,11 +112,11 @@ namespace Org.Quickstart.API
                     //if you don't create it you will get errors
 
                     //create collection to store documents in
-                    try { await db.CreateCollection().ConfigureAwait(false); }
+                    try { await db.CreateCollection(); }
                     catch {}
                     
                     //creates the indexes for our SQL++ query
-                    await db.CreateIndex().ConfigureAwait(false);
+                    await db.CreateIndex();
 	            });
 		    } else {
 	            //setup the database once everything is setup and running

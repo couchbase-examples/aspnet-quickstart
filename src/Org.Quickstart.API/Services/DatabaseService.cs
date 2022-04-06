@@ -38,10 +38,10 @@ namespace Org.Quickstart.API.Services
 		public async Task CreateIndex()
 		{
 			ICluster cluster = null;
-
 			//try to create index - if fails it probably already exists
 			try
 			{ 
+				_logger.LogInformation( "**INFO** Trying to create Indexes...");
 				cluster = await _clusterProvider.GetClusterAsync();
 				if (cluster != null)
 				{
@@ -53,7 +53,7 @@ namespace Org.Quickstart.API.Services
 					};
 					foreach (var query in queries)
 					{
-						_logger.LogInformation( "**INFO** Trying to create Indexes...");
+						_logger.LogInformation( "**INFO** Running Create Index query: {query}", query);
 						var result = await cluster.QueryAsync<dynamic>(query);
 						if (result.MetaData.Status != QueryStatus.Success)
 						{
@@ -61,6 +61,9 @@ namespace Org.Quickstart.API.Services
 							throw new System.Exception($"Error create index didn't return proper results for index {query}");
 						}
 					}
+				}
+				else {
+					_logger.LogError("**ERROR** Couldn't create indexes, cluster is null");
 				}
 			}
 			catch (IndexExistsException)
