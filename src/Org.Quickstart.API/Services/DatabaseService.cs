@@ -80,12 +80,13 @@ namespace Org.Quickstart.API.Services
 				_couchbaseConfig.Password);
 				bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
 			}
-			catch (System.Exception)
+			catch (System.Exception ex)
 			{ 
-				_logger.LogError("**ERROR**  Couldn't connect to bucket {BucketName} with username: <{Username}> and password: <{Password}>",
+				_logger.LogError("**ERROR**  Couldn't connect to bucket {BucketName} with username: <{Username}> and password: <{Password}> with Error: {Error}",
 					_couchbaseConfig.BucketName,
 					_couchbaseConfig.Username,
-					_couchbaseConfig.Password);
+					_couchbaseConfig.Password,
+					ex.Message);
 
 			}
 			if (bucket != null)
