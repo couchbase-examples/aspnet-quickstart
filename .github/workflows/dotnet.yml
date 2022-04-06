@@ -65,7 +65,7 @@ jobs:
     - name: Build
       run: dotnet build --configuration Debug --no-restore 
     - name: Test
-      run: timeout 120 dotnet test --no-build --verbosity detailed 
+      run: timeout 120 dotnet test --no-build --verbosity normal 
     - name: Report Status
       if: always()
       uses: ravsamhq/notify-slack-action@v1
