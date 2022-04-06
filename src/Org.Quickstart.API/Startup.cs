@@ -107,7 +107,10 @@ namespace Org.Quickstart.API
 	            //setup the database once everything is setup and running integration tests need to make sure database is fully working before running,hence running Synchronously
 	            appLifetime.ApplicationStarted.Register(() => {
 		            var db = app.ApplicationServices.GetService<DatabaseService>();
-                    db.CreateCollection().RunSynchronously();
+                    //try to each exception to see if we create indexes
+                    try {
+                        db.CreateCollection().RunSynchronously();
+                    } catch (System.Exception) { }
                     db.CreateIndex().RunSynchronously();
 	            });
 		    } else {
