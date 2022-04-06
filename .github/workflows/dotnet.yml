@@ -41,15 +41,15 @@ jobs:
         wget -O /dev/null  http://localhost:8091/ && echo "DONE" || (echo "FAIL" && panic)
         curl  -v -X POST http://localhost:8091/node/controller/setupServices -d 'services=kv%2Cn1ql%2Cindex'
         curl  -v -X POST http://localhost:8091/pools/default -d 'memoryQuota=1024' -d 'indexMemoryQuota=512'
-        curl  -u admin:P@$$w0rd12 -v -X POST http://localhost:8091/settings/web -d 'password=P@$$w0rd12&username=admin&port=SAME'
+        curl  -u Administrator:password -v -X POST http://localhost:8091/settings/web -d 'password=password&username=Administrator&port=SAME'
          curl -v -X POST http://localhost:8091/pools/default/buckets \
-          -u admin:P@$$w0rd12 \
+          -u Administrator:password \
           -d name=user_profile \
           -d bucketType=couchbase\
           -d ramQuotaMB=512 \
           -d durabilityMinLevel=None
-        curl  -u admin:P@$$w0rd12 -v -X POST http://localhost:8091/settings/indexes -d 'storageMode=memory_optimized'
-        curl  -u admin:P@$$w0rd12 -v -X GET http://localhost:8091/pools/default | jq '.' | grep hostname
+        curl  -u Administrator:password -v -X POST http://localhost:8091/settings/indexes -d 'storageMode=memory_optimized'
+        curl  -u Administrator:password -v -X GET http://localhost:8091/pools/default | jq '.' | grep hostname
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
