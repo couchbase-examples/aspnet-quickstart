@@ -83,6 +83,12 @@ namespace Org.Quickstart.API.Services
 			{
 				if (!_couchbaseConfig.ScopeName.StartsWith("_"))
 				{
+					_logger.LogWarning(
+						"Creating Collection {CollectionName} with username: {Username} and password {Password} in bucket {BucketName}", 
+						_couchbaseConfig.CollectionName, 
+						_couchbaseConfig.Username,
+						_couchbaseConfig.Password,
+						_couchbaseConfig.BucketName);
 					//try to create scope - if fails it's ok we are probably using default
 					try
 					{
