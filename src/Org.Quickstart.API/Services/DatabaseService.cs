@@ -72,23 +72,24 @@ namespace Org.Quickstart.API.Services
 
 			try
 			{
-				_logger.LogInformation( "**INFO** Creating {CollectionName} with username: {Username} and password {Password} in bucket {BucketName}",
-				_couchbaseConfig.CollectionName,
+				_logger.LogInformation( "**INFO** Opening Bucket <{BucketName}> with username: <{Username}> and password:<{Password}>",
+				_couchbaseConfig.BucketName,
 				_couchbaseConfig.Username,
-				_couchbaseConfig.Password,
-				_couchbaseConfig.BucketName);
+				_couchbaseConfig.Password);
 				bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
 			}
 			catch (System.Exception)
 			{ 
-				_logger.LogError($"Couldn't connect to bucket {_couchbaseConfig.BucketName}, please check username, password, and connection string.");
+				_logger.LogError("Couldn't connect to bucket {BucketName} with username: <{Username}> and password: <{Password}>",
+					_couchbaseConfig.BucketName,
+					_couchbaseConfig.Username,
+					_couchbaseConfig.Password);
 
 			}
 			if (bucket != null)
 			{
 				if (!_couchbaseConfig.ScopeName.StartsWith("_"))
 				{
-
 					//try to create scope - if fails it's ok we are probably using default
 					try
 					{
@@ -107,6 +108,11 @@ namespace Org.Quickstart.API.Services
 				//try to create collection - if fails it's ok the collection probably exists
 				try
 				{
+					_logger.LogInformation("**INFO** Creating Collection:  <{CollectionName}> with username: <{Username}> and password:<{Password}> in bucket <{BucketName}>",
+						_couchbaseConfig.CollectionName,
+						_couchbaseConfig.Username,
+						_couchbaseConfig.Password,
+						_couchbaseConfig.BucketName);
 					await bucket.Collections.CreateCollectionAsync(new CollectionSpec(_couchbaseConfig.ScopeName, _couchbaseConfig.CollectionName));
 				}
 				catch (CollectionExistsException)
