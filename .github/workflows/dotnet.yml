@@ -6,6 +6,7 @@ on:
   - cron: "0 0 * * 0"
 env:
   ASPNETCORE_ENVIRONMENT: "Testing"
+  DOTNET_ENVIRONMENT: "Testing"
 jobs:
   build:
     runs-on: ubuntu-latest
