@@ -1,4 +1,7 @@
 # Quickstart in Couchbase with C# and ASP .NET
+
+[![ASP.NET](https://github.com/couchbase-examples/aspnet-quickstart/actions/workflows/dotnet.yml/badge.svg)](https://github.com/couchbase-examples/aspnet-quickstart/actions/workflows/dotnet.yml)
+
 #### Build a REST API with Couchbase's C# SDK 3 and ASP .NET
 
 > This repo is designed to teach you how to connect to a Couchbase cluster to create, read, update, and delete documents and how to write simple parametrized N1QL queries.
