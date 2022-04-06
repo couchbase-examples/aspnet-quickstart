@@ -109,8 +109,10 @@ namespace Org.Quickstart.API
 		            var db = app.ApplicationServices.GetService<DatabaseService>();
                     Task.Run(async () => {
                         await db.CreateCollection();
-                        await db.CreateIndex();
 			        }).ConfigureAwait(false);
+                    Task.Run(async () => {
+                        await db.CreateIndex();
+                    }).ConfigureAwait(false);
 	            });
 		    } else {
 	            //setup the database once everything is setup and running
