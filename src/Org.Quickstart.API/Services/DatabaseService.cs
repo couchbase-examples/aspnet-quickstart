@@ -38,14 +38,14 @@ namespace Org.Quickstart.API.Services
 		public async Task CreateIndex()
 		{
 			ICluster cluster = null;
-
 			//try to create index - if fails it probably already exists
 			try
 			{ 
-				cluster = await _clusterProvider.GetClusterAsync();
+				_logger.LogInformation( "**INFO** Trying to create Indexes...");
+				cluster = await _clusterProvider.GetClusterAsync().ConfigureAwait(false);
+				_logger.LogInformation("**INFO** Create Indexes - Cluster returned.");
 				if (cluster != null)
 				{
-					await Task.Delay(5000);
 					var queries = new List<string>
 					{
 						$"CREATE PRIMARY INDEX default_profile_index ON {_couchbaseConfig.BucketName}.{_couchbaseConfig.ScopeName}.{_couchbaseConfig.CollectionName}",
@@ -53,17 +53,26 @@ namespace Org.Quickstart.API.Services
 					};
 					foreach (var query in queries)
 					{
-						var result = await cluster.QueryAsync<dynamic>(query);
+						_logger.LogInformation( "**INFO** Running Create Index query: {query}", query);
+						var result = await cluster.QueryAsync<dynamic>(query).ConfigureAwait(false);
 						if (result.MetaData.Status != QueryStatus.Success)
 						{
+							_logger.LogError("**ERROR** Couldn't create index required with {Query}", query);
 							throw new System.Exception($"Error create index didn't return proper results for index {query}");
 						}
 					}
+				}
+				else {
+					_logger.LogError("**ERROR** Couldn't create indexes, cluster is null");
 				}
 			}
 			catch (IndexExistsException)
 			{
 				_logger.LogWarning($"Collection {_couchbaseConfig.CollectionName} already exists in {_couchbaseConfig.BucketName}.");
+			}
+			catch (System.Exception ex) 
+			{ 
+					_logger.LogError("**ERROR** {Message}", ex.Message);
 			}
 		}
 		public async Task CreateCollection() 
@@ -72,11 +81,19 @@ namespace Org.Quickstart.API.Services
 
 			try
 			{
+				_logger.LogInformation( "**INFO** Opening Bucket <{BucketName}> with username: <{Username}> and password:<{Password}>",
+				_couchbaseConfig.BucketName,
+				_couchbaseConfig.Username,
+				_couchbaseConfig.Password);
 				bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
 			}
-			catch (System.Exception)
+			catch (System.Exception ex)
 			{ 
-				_logger.LogError($"Couldn't connect to bucket {_couchbaseConfig.BucketName}, please check username, password, and connection string.");
+				_logger.LogError("**ERROR**  Couldn't connect to bucket {BucketName} with username: <{Username}> and password: <{Password}> with Error: {Error}",
+					_couchbaseConfig.BucketName,
+					_couchbaseConfig.Username,
+					_couchbaseConfig.Password,
+					ex.Message);
 
 			}
 			if (bucket != null)
@@ -101,6 +118,11 @@ namespace Org.Quickstart.API.Services
 				//try to create collection - if fails it's ok the collection probably exists
 				try
 				{
+					_logger.LogInformation("**INFO** Creating Collection:  <{CollectionName}> with username: <{Username}> and password:<{Password}> in bucket <{BucketName}>",
+						_couchbaseConfig.CollectionName,
+						_couchbaseConfig.Username,
+						_couchbaseConfig.Password,
+						_couchbaseConfig.BucketName);
 					await bucket.Collections.CreateCollectionAsync(new CollectionSpec(_couchbaseConfig.ScopeName, _couchbaseConfig.CollectionName));
 				}
 				catch (CollectionExistsException)
