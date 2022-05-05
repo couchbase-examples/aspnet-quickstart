@@ -1,4 +1,4 @@
-FROM deniswsrosa/couchbase7.0.beta-gitpod
+FROM public.ecr.aws/z2f7n8a1/couchbase-da-containers:couchbase-neo
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive &&\ 
  apt-get install -y wget &&\
