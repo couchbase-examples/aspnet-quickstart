@@ -184,9 +184,16 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
             var newToJsonResult = await newToResponse.Content.ReadAsStringAsync();
             var newToProfile = JsonConvert.DeserializeObject<Profile>(newToJsonResult);
             Assert.Equal(newToProfile.OnBoardCredit, toProfile.OnBoardCredit + transferAmount);
-        }
 
-        private Profile GetProfile()
+            // cleanup: remove users
+            var deleteResponseTo = await _client.DeleteAsync($"{baseHostname}/{newToProfile.Pid}");
+            Assert.Equal(HttpStatusCode.OK, deleteResponseTo.StatusCode);
+            var deleteResponseFrom = await _client.DeleteAsync($"{baseHostname}/{newFromProfile.Pid}");
+            Assert.Equal(HttpStatusCode.OK, deleteResponseFrom.StatusCode);
+
+		}
+
+		private Profile GetProfile()
 	    {
 	        return new ProfileCreateRequestCommand(){
 		        FirstName = "John",
