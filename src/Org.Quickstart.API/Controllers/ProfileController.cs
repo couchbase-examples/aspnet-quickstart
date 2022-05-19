@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Couchbase.Core.Exceptions.KeyValue;
 using Couchbase.Extensions.DependencyInjection;
+using Couchbase.KeyValue;
 using Couchbase.Transactions;
 using Couchbase.Transactions.Config;
 using Microsoft.AspNetCore.Http;
@@ -184,7 +185,8 @@ namespace Org.Quickstart.API.Controllers
                 var bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
                 var collection = await bucket.CollectionAsync(_couchbaseConfig.CollectionName);
 
-                var tx = Transactions.Create(bucket.Cluster, TransactionConfigBuilder.Create());
+                // only use DurabilityLevel.None for single node
+                var tx = Transactions.Create(bucket.Cluster, TransactionConfigBuilder.Create().DurabilityLevel(DurabilityLevel.None));
                 await tx.RunAsync(async (ctx) =>
                 {
                     var fromProfileDoc = await ctx.GetAsync(collection, request.Pfrom.ToString());
