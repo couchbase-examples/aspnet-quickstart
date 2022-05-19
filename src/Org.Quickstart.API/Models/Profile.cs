@@ -7,6 +7,7 @@ namespace Org.Quickstart.API.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public decimal OnBoardCredit { get; set; }
 
         private string _password;
         public string Password {
@@ -19,5 +20,14 @@ namespace Org.Quickstart.API.Models
                 _password = BCrypt.Net.BCrypt.HashPassword(value);
             }
          }
+
+        public void TransferTo(Profile to, decimal amount)
+        {
+            // TODO: logic to make sure amount can't go negative
+            // and that amount isn't negative, etc
+
+            this.OnBoardCredit -= amount;
+            to.OnBoardCredit += amount;
+        }
     }
 }

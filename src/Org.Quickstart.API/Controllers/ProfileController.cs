@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Couchbase.Core.Exceptions.KeyValue;
 using Couchbase.Extensions.DependencyInjection;
+using Couchbase.Transactions;
+using Couchbase.Transactions.Config;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -162,6 +164,44 @@ namespace Org.Quickstart.API.Controllers
                     return NotFound();
 
                 return Ok(items);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message} {ex.StackTrace} {Request.GetDisplayUrl()}");
+            }
+        }
+
+        [HttpPost]
+        [Route("/api/v1/transfer")]
+        [SwaggerOperation(OperationId = "UserProfile-Transfer", Summary = "Transfer on-board credit", Description = "Transfer on-board credit between two profiles")]
+        [SwaggerResponse(200, "On-board credit transferred")]
+        [SwaggerResponse(500, "Returns an internal error")]
+        public async Task<IActionResult> Transfer([FromBody] ProfileTransferCredit request)
+        {
+            try
+            {
+                var bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
+                var collection = await bucket.CollectionAsync(_couchbaseConfig.CollectionName);
+
+                var tx = Transactions.Create(bucket.Cluster, TransactionConfigBuilder.Create());
+                await tx.RunAsync(async (ctx) =>
+                {
+                    var fromProfileDoc = await ctx.GetAsync(collection, request.Pfrom.ToString());
+                    var fromProfile = fromProfileDoc.ContentAs<Profile>();
+
+                    var toProfileDoc = await ctx.GetAsync(collection, request.Pto.ToString());
+                    var toProfile = toProfileDoc.ContentAs<Profile>();
+
+                    fromProfile.TransferTo(toProfile, request.Amount);
+
+                    await ctx.ReplaceAsync(fromProfileDoc, fromProfile);
+                    await ctx.ReplaceAsync(toProfileDoc, toProfile);
+
+                    await ctx.CommitAsync();
+                });
+
+                return Ok();
             }
             catch (Exception ex)
             {
