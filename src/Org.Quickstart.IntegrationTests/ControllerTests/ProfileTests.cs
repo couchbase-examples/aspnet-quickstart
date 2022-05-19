@@ -18,6 +18,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
         private readonly HttpClient _client;
 		private readonly string baseHostname = "/api/v1/profile";
 		private readonly string baseHostnameSearch = "/api/v1/profiles";
+		private readonly string baseHostnameTransfer = "/api/v1/transfer";
 
         public ProfileTests(CustomWebApplicationFactory<Startup> factory)
         {
@@ -140,13 +141,66 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 			Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
 		}
 
+        [Fact]
+        public async Task TransferOnBoardCreditAsync()
+        {
+            // amount to transfer
+            var transferAmount = 50.0M;
+
+            //create users
+            var fromProfile = GetProfile();
+            var fromUser = JsonConvert.SerializeObject(fromProfile);
+            var fromContent = new StringContent(fromUser, Encoding.UTF8, "application/json");
+            var fromResponse = await _client.PostAsync(baseHostname, fromContent);
+            var fromJson = await fromResponse.Content.ReadAsStringAsync();
+            fromProfile = JsonConvert.DeserializeObject<Profile>(fromJson);
+
+            var toProfile = GetProfile();
+            var toUser = JsonConvert.SerializeObject(toProfile);
+            var toContent = new StringContent(toUser, Encoding.UTF8, "application/json");
+            var toResponse = await _client.PostAsync(baseHostname, toContent);
+            var toJson = await toResponse.Content.ReadAsStringAsync();
+            toProfile = JsonConvert.DeserializeObject<Profile>(toJson);
+
+            // transfer funds
+            var transfer = new ProfileTransferCredit
+            {
+                Pfrom = fromProfile.Pid,
+                Pto = toProfile.Pid,
+                Amount = transferAmount
+            };
+            var transferJson = JsonConvert.SerializeObject(transfer);
+            var transferContent = new StringContent(transferJson, Encoding.UTF8, "application/json");
+            await _client.PostAsync(baseHostnameTransfer, transferContent);
+
+            // validate "from" user amount is down
+            var newFromResponse = await _client.GetAsync($"{baseHostname}/{fromProfile.Pid}");
+            var newFromJsonResult = await newFromResponse.Content.ReadAsStringAsync();
+            var newFromProfile = JsonConvert.DeserializeObject<Profile>(newFromJsonResult);
+            Assert.Equal(newFromProfile.OnBoardCredit, fromProfile.OnBoardCredit - transferAmount);
+
+            // validate "to" user amount is up
+            var newToResponse = await _client.GetAsync($"{baseHostname}/{toProfile.Pid}");
+            var newToJsonResult = await newToResponse.Content.ReadAsStringAsync();
+            var newToProfile = JsonConvert.DeserializeObject<Profile>(newToJsonResult);
+            Assert.Equal(newToProfile.OnBoardCredit, toProfile.OnBoardCredit + transferAmount);
+
+            // cleanup: remove users
+            var deleteResponseTo = await _client.DeleteAsync($"{baseHostname}/{newToProfile.Pid}");
+            Assert.Equal(HttpStatusCode.OK, deleteResponseTo.StatusCode);
+            var deleteResponseFrom = await _client.DeleteAsync($"{baseHostname}/{newFromProfile.Pid}");
+            Assert.Equal(HttpStatusCode.OK, deleteResponseFrom.StatusCode);
+
+		}
+
 		private Profile GetProfile()
 	    {
 	        return new ProfileCreateRequestCommand(){
 		        FirstName = "John",
 		        LastName = "Doe",
 		        Email = "john.doe@couchbase.com",
-		        Password = "password"
+		        Password = "password",
+				OnBoardCredit = 500
 		    }.GetProfile(); 
 	    }
 
@@ -156,6 +210,7 @@ namespace Org.Quickstart.IntegrationTests.ControllerTests
 	        profile.LastName = "Smith";
 	        profile.Email = "Jane.Smith@couchbase.com";
 	        profile.Password = "password1";
-	    }
+            profile.OnBoardCredit = profile.OnBoardCredit;
+        }
     }
 }

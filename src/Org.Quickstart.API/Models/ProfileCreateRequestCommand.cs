@@ -7,6 +7,7 @@ namespace Org.Quickstart.API.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public decimal OnBoardCredit { get; set; }
 
         public Profile GetProfile()
         {
@@ -16,7 +17,8 @@ namespace Org.Quickstart.API.Models
                 FirstName = this.FirstName,
                 LastName = this.LastName,
                 Email = this.Email,
-                Password = this.Password
+                Password = this.Password,
+                OnBoardCredit = this.OnBoardCredit
             };
         }
     }
