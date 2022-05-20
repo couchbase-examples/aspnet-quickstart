@@ -6,6 +6,7 @@ using Couchbase.Extensions.DependencyInjection;
 using Couchbase.KeyValue;
 using Couchbase.Transactions;
 using Couchbase.Transactions.Config;
+using Couchbase;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -157,9 +158,18 @@ namespace Org.Quickstart.API.Controllers
             try
             {
                 var cluster = await _clusterProvider.GetClusterAsync();
-                var query = $"SELECT p.* FROM  {_couchbaseConfig.BucketName}.{_couchbaseConfig.ScopeName}.{_couchbaseConfig.CollectionName} p WHERE lower(p.firstName) LIKE '%{request.Search.ToLower()}%' OR lower(p.lastName) LIKE '%{request.Search.ToLower()}%' LIMIT {request.Limit} OFFSET {request.Skip}";
+                var query = $@"SELECT p.*
+FROM `{_couchbaseConfig.BucketName}`.`{_couchbaseConfig.ScopeName}`.`{_couchbaseConfig.CollectionName}` p
+WHERE lower(p.firstName) LIKE '%' || $search || '%'
+OR lower(p.lastName) LIKE '%' || $search || '%'
+LIMIT $limit OFFSET $skip";
 
-                var results = await cluster.QueryAsync<Profile>(query);
+                var results = await cluster.QueryAsync<Profile>(query, options =>
+                {
+                    options.Parameter("search", request.Search.ToLower());
+                    options.Parameter("limit", request.Limit);
+                    options.Parameter("skip", request.Skip);
+                });
                 var items = await results.Rows.ToListAsync<Profile>();
                 if (items.Count == 0)
                     return NotFound();
