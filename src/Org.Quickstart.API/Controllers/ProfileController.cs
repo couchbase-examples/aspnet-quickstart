@@ -53,7 +53,7 @@ namespace Org.Quickstart.API.Controllers
                 var bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
 
 		        var scope = bucket.Scope(_couchbaseConfig.ScopeName);
-                var collection = scope.Collection(_couchbaseConfig.CollectionName); 
+                var collection = await scope.CollectionAsync(_couchbaseConfig.CollectionName); 
 		        var result = await collection.GetAsync(id.ToString());
                 return Ok(result.ContentAs<Profile>());
 
@@ -81,7 +81,7 @@ namespace Org.Quickstart.API.Controllers
 		        if (!string.IsNullOrEmpty(request.Email) && !string.IsNullOrEmpty(request.Password))
 		        {
 		            var bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
-		            var collection = bucket.Collection(_couchbaseConfig.CollectionName);
+		            var collection = await bucket.CollectionAsync(_couchbaseConfig.CollectionName);
 		            var profile = request.GetProfile();
                     profile.Pid = Guid.NewGuid();
 		            await collection.InsertAsync(profile.Pid.ToString(), profile);
@@ -111,9 +111,7 @@ namespace Org.Quickstart.API.Controllers
             try
             {
                 var bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
-                var collection = bucket.Collection(_couchbaseConfig.CollectionName);
-                var result = await collection.GetAsync(request.Pid.ToString());
-                var profile = result.ContentAs<Profile>();
+                var collection = await bucket.CollectionAsync(_couchbaseConfig.CollectionName);
 		
                 var updateResult = await collection.ReplaceAsync<Profile>(request.Pid.ToString(), request.GetProfile());
                 return Ok(request);
@@ -137,7 +135,7 @@ namespace Org.Quickstart.API.Controllers
             try
             {
 		        var bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
-		        var collection = bucket.Collection(_couchbaseConfig.CollectionName);
+		        var collection = await bucket.CollectionAsync(_couchbaseConfig.CollectionName);
 		        await collection.RemoveAsync(id.ToString());
                 return this.Ok();
             }
@@ -195,7 +193,7 @@ LIMIT $limit OFFSET $skip";
                 var bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
                 var collection = await bucket.CollectionAsync(_couchbaseConfig.CollectionName);
 
-                // only use DurabilityLevel.None for single node
+                // only use DurabilityLevel.None for single node (e.g. a local single-node install, not Capella)
                 var tx = Transactions.Create(bucket.Cluster, TransactionConfigBuilder.Create().DurabilityLevel(DurabilityLevel.None));
                 await tx.RunAsync(async (ctx) =>
                 {

@@ -18,7 +18,8 @@ namespace Org.Quickstart.API.Models
 		        FirstName = this.FirstName,
 		        LastName = this.LastName,
 		        Email = this.Email,
-	            Password = this.Password
+	            Password = this.Password,
+                OnBoardCredit = this.OnBoardCredit
             };
 	    } 
     }
