@@ -6,6 +6,7 @@ using Couchbase.Extensions.DependencyInjection;
 using Couchbase.KeyValue;
 using Couchbase.Transactions;
 using Couchbase.Transactions.Config;
+using Couchbase;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -52,7 +53,7 @@ namespace Org.Quickstart.API.Controllers
                 var bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
 
 		        var scope = bucket.Scope(_couchbaseConfig.ScopeName);
-                var collection = scope.Collection(_couchbaseConfig.CollectionName); 
+                var collection = await scope.CollectionAsync(_couchbaseConfig.CollectionName); 
 		        var result = await collection.GetAsync(id.ToString());
                 return Ok(result.ContentAs<Profile>());
 
@@ -80,7 +81,7 @@ namespace Org.Quickstart.API.Controllers
 		        if (!string.IsNullOrEmpty(request.Email) && !string.IsNullOrEmpty(request.Password))
 		        {
 		            var bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
-		            var collection = bucket.Collection(_couchbaseConfig.CollectionName);
+		            var collection = await bucket.CollectionAsync(_couchbaseConfig.CollectionName);
 		            var profile = request.GetProfile();
                     profile.Pid = Guid.NewGuid();
 		            await collection.InsertAsync(profile.Pid.ToString(), profile);
@@ -110,9 +111,7 @@ namespace Org.Quickstart.API.Controllers
             try
             {
                 var bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
-                var collection = bucket.Collection(_couchbaseConfig.CollectionName);
-                var result = await collection.GetAsync(request.Pid.ToString());
-                var profile = result.ContentAs<Profile>();
+                var collection = await bucket.CollectionAsync(_couchbaseConfig.CollectionName);
 		
                 var updateResult = await collection.ReplaceAsync<Profile>(request.Pid.ToString(), request.GetProfile());
                 return Ok(request);
@@ -136,7 +135,7 @@ namespace Org.Quickstart.API.Controllers
             try
             {
 		        var bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
-		        var collection = bucket.Collection(_couchbaseConfig.CollectionName);
+		        var collection = await bucket.CollectionAsync(_couchbaseConfig.CollectionName);
 		        await collection.RemoveAsync(id.ToString());
                 return this.Ok();
             }
@@ -157,9 +156,18 @@ namespace Org.Quickstart.API.Controllers
             try
             {
                 var cluster = await _clusterProvider.GetClusterAsync();
-                var query = $"SELECT p.* FROM  {_couchbaseConfig.BucketName}.{_couchbaseConfig.ScopeName}.{_couchbaseConfig.CollectionName} p WHERE lower(p.firstName) LIKE '%{request.Search.ToLower()}%' OR lower(p.lastName) LIKE '%{request.Search.ToLower()}%' LIMIT {request.Limit} OFFSET {request.Skip}";
+                var query = $@"SELECT p.*
+FROM `{_couchbaseConfig.BucketName}`.`{_couchbaseConfig.ScopeName}`.`{_couchbaseConfig.CollectionName}` p
+WHERE lower(p.firstName) LIKE '%' || $search || '%'
+OR lower(p.lastName) LIKE '%' || $search || '%'
+LIMIT $limit OFFSET $skip";
 
-                var results = await cluster.QueryAsync<Profile>(query);
+                var results = await cluster.QueryAsync<Profile>(query, options =>
+                {
+                    options.Parameter("search", request.Search.ToLower());
+                    options.Parameter("limit", request.Limit);
+                    options.Parameter("skip", request.Skip);
+                });
                 var items = await results.Rows.ToListAsync<Profile>();
                 if (items.Count == 0)
                     return NotFound();
@@ -185,7 +193,7 @@ namespace Org.Quickstart.API.Controllers
                 var bucket = await _bucketProvider.GetBucketAsync(_couchbaseConfig.BucketName);
                 var collection = await bucket.CollectionAsync(_couchbaseConfig.CollectionName);
 
-                // only use DurabilityLevel.None for single node
+                // only use DurabilityLevel.None for single node (e.g. a local single-node install, not Capella)
                 var tx = Transactions.Create(bucket.Cluster, TransactionConfigBuilder.Create().DurabilityLevel(DurabilityLevel.None));
                 await tx.RunAsync(async (ctx) =>
                 {
