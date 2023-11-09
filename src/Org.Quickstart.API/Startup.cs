@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Couchbase.Extensions.DependencyInjection;
+﻿using Couchbase.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Org.Quickstart.API.Models;
-using Org.Quickstart.API.Services;
 
 namespace Org.Quickstart.API
 {
@@ -61,16 +59,13 @@ namespace Org.Quickstart.API
 	        services.AddCouchbase(Configuration.GetSection("Couchbase"));
 	        services.AddHttpClient();
 
-	        //register the service to handle bucket, collection, scope, and index creation
-            services.AddTransient<DatabaseService>();
-
             services.AddControllers();
 
 	        //customize Swagger UI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { 
-		            Title = "Couchbase Quickstart API", 
+		            Title = "Couchbase Travel Sample API", 
 		            Version = "v1" 
 		        });
             });
@@ -105,22 +100,8 @@ namespace Org.Quickstart.API
                  app.UseCors(_devSpecificOriginsName);
 
                  //assume that bucket, collection, and indexes already exists due to latency in creating and async 
-		    } else {
-	            //setup the database once everything is setup and running
-	            appLifetime.ApplicationStarted.Register(async () => {
-		            var db = app.ApplicationServices.GetService<DatabaseService>();
-
-                    //warning - we assume the bucket has already been created
-                    //if you don't create it you will get errors
-
-                    //create collection to store documents in
-                    await db.CreateCollection();
-                    
-                    //creates the indexes for our SQL++ query
-                    await db.CreateIndex();
-	            });
-		    }
-
+		    } 
+            
             //remove couchbase from memory when ASP.NET closes
             appLifetime.ApplicationStopped.Register(() => {
                 app.ApplicationServices
