@@ -1,5 +1,4 @@
-﻿using System;
-namespace Org.Quickstart.API.Models
+﻿namespace Org.Quickstart.API.Models
 {
     public class ProfileListRequestQuery
     {

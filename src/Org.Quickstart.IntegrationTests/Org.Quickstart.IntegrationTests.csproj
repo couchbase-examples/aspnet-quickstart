@@ -28,10 +28,6 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ControllerTests\" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Org.Quickstart.API\Org.Quickstart.API.csproj" />
   </ItemGroup>
