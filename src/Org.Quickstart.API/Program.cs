@@ -43,9 +43,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "_devAllowSpecificOrigins",
                       policyBuilder =>
                       {
-                          policyBuilder.WithOrigins("https://*.gitpod.io",
+                          policyBuilder.WithOrigins(
                                               "https://*.github.com",
                                               "http://localhost:5000",
+                                              "http://localhost:8080",
                                               "https://localhost:5001")
                                  .AllowAnyHeader()
                                  .AllowAnyMethod()
@@ -82,7 +83,6 @@ builder.Services.AddSwaggerGen(options =>
     options.EnableAnnotations();
 });
 
-
 // Register the InventoryScopeFactory
 builder.Services.AddSingleton<IInventoryScopeService, InventoryScopeService>();
 
@@ -105,23 +105,23 @@ lifetime.ApplicationStarted.Register(() =>
     logger.LogInformation("Swagger UI is available at: {Address}/index.html", address);
 });
 
-// Configure
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-    app.UseCors("_devAllowSpecificOrigins");
-
-    app.UseSwagger();
-    app.UseSwaggerUI(c => {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Couchbase Quickstart API v1"); 
-        c.RoutePrefix = string.Empty;
-    });
-}
+app.UseSwagger();
+app.UseSwaggerUI(c => {
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Couchbase Quickstart API v1"); 
+    c.RoutePrefix = string.Empty;
+});
 
 if (app.Environment.EnvironmentName == "Testing")
 {
     app.UseCors("_devAllowSpecificOrigins");
 }
+
+//remove couchbase from memory when ASP.NET closes
+app.Lifetime.ApplicationStopped.Register(() =>
+{
+    var cls = app.Services.GetRequiredService<ICouchbaseLifetimeService>();
+    cls.Close();
+});
 
 app.UseHttpsRedirection();
 app.UseRouting();
