@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Org.Quickstart.API.Models;
+using Org.Quickstart.API.Services;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Org.Quickstart.API.Controllers;
@@ -18,23 +19,25 @@ public class RouteController: Controller
     private readonly ILogger _logger;
     private readonly IScope _inventoryScope;
     
-    public RouteController(ILogger<RouteController> logger, IScope inventoryScope)
+    private const string CollectionName = "route";
+
+    public RouteController(ILogger<RouteController> logger, IInventoryScopeService inventoryScopeService)
     {
-        _logger = logger;
-        _inventoryScope = inventoryScope;
+	    _logger = logger;
+	    _inventoryScope = inventoryScopeService.GetInventoryScope();
     }
     
     [HttpGet("{id}")]
-     [SwaggerOperation(Description = "Get Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to get a document with specified ID.")]
-     [SwaggerResponse(200, "Found Route")]
-     [SwaggerResponse(404, "Route ID not found")]
-     [SwaggerResponse(500, "Unexpected Error")]
-     public async Task<IActionResult> GetById([FromRoute] string id)
-     {
+    [SwaggerOperation(Description = "Get Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to get a document with specified ID.")]
+    [SwaggerResponse(200, "Found Route")]
+    [SwaggerResponse(404, "Route ID not found")]
+    [SwaggerResponse(500, "Unexpected Error")]
+	public async Task<IActionResult> GetById([FromRoute(Name = "id"), SwaggerParameter("Route ID like route_10", Required = true)] string id)
+    {
 	     try
 	     {
 		         //get the collection
-			     var collection = await _inventoryScope.CollectionAsync("route");
+			     var collection = await _inventoryScope.CollectionAsync(CollectionName);
 
 			     //get the document from the bucket using the id
 			     var result = await collection.GetAsync(id);
@@ -64,12 +67,13 @@ public class RouteController: Controller
      [SwaggerResponse(201, "Created")]
      [SwaggerResponse(409, "Route already exists")]
      [SwaggerResponse(500, "Unexpected Error")]
-     public async Task<IActionResult> Post(string id, [FromBody] RouteCreateRequestCommand request)
+     public async Task<IActionResult> Post([FromRoute(Name = "id"), SwaggerParameter("Route ID like route_10", Required = true)] string id, 
+	     [FromBody, SwaggerRequestBody("The route details to create", Required = true)] RouteCreateRequestCommand request)
      {
 	     try
 	     {
 		         //get the collection
-			     var collection = await _inventoryScope.CollectionAsync("route");
+			     var collection = await _inventoryScope.CollectionAsync(CollectionName);
 
 			     //get airline from request
 			     var route = request.GetRoute();
@@ -96,12 +100,13 @@ public class RouteController: Controller
      [SwaggerResponse(200, "Route Updated")]
      [SwaggerResponse(404, "Route ID not found")]
      [SwaggerResponse(500, "Unexpected Error")]
-     public async Task<IActionResult> Update(string id, [FromBody] RouteCreateRequestCommand request)
+     public async Task<IActionResult> Update([FromRoute(Name = "id"), SwaggerParameter("Route ID like route_10", Required = true)] string id, 
+	     [FromBody, SwaggerRequestBody("The route details to update", Required = true)] RouteCreateRequestCommand request)
      {
 	     try
 	     { 
 		     //get the collection
-		     var collection = await _inventoryScope.CollectionAsync("route");
+		     var collection = await _inventoryScope.CollectionAsync(CollectionName);
 
 		     //get current airport from the database and update it
 		     if (await collection.GetAsync(id) is { } result)
@@ -134,12 +139,12 @@ public class RouteController: Controller
      [SwaggerResponse(204, "Route Deleted")]
      [SwaggerResponse(404, "Route ID not found")]
      [SwaggerResponse(500, "Unexpected Error")]
-     public async Task<IActionResult> Delete([FromRoute] string id)
+     public async Task<IActionResult> Delete([FromRoute(Name = "id"), SwaggerParameter("Route ID like route_10", Required = true)] string id)
      {
 	     try
 	     {
 		     //get the collection
-		     var collection = await _inventoryScope.CollectionAsync("route");
+		     var collection = await _inventoryScope.CollectionAsync(CollectionName);
 
 		     //get the document from the bucket using the id
 		     var result = await collection.GetAsync(id);
@@ -168,5 +173,4 @@ public class RouteController: Controller
 	     
 	     return NotFound();
      }
-    
 }

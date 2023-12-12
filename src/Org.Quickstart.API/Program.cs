@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,12 +9,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Org.Quickstart.API.Models;
 using Couchbase.Extensions.DependencyInjection;
-using Couchbase.KeyValue;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.Extensions.Logging;
+using Org.Quickstart.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Global pointer to inventory scope
-IScope inventoryScope = null;
 
 var config = builder.Configuration.GetSection("Couchbase");
 
@@ -53,6 +56,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     var description = new StringBuilder()
@@ -74,32 +78,32 @@ builder.Services.AddSwaggerGen(options =>
         Title = "Quickstart in Couchbase with C# and ASP.NET",
         Description = description
     });
+    
+    options.EnableAnnotations();
 });
 
-// Retrieve configuration values from appsettings.json
-var bucketName = builder.Configuration["Couchbase:BucketName"];
-if (bucketName != null)
-{
-    var bucket = builder.Services.BuildServiceProvider().GetRequiredService<IBucketProvider>().GetBucketAsync(bucketName).GetAwaiter().GetResult();
 
-    const string scopeName = "inventory";
-    
-    // get inventory scope
-    try
-    {
-        inventoryScope = bucket.ScopeAsync(scopeName).GetAwaiter().GetResult();
-    }
-    catch (Exception)
-    {
-        throw new InvalidOperationException("The 'inventory' scope does not exist in 'travel-sample' bucket.");
-    }
-}
-
-// Add inventoryScope to the service collection
-if (inventoryScope != null) builder.Services.AddSingleton(inventoryScope);
+// Register the InventoryScopeFactory
+builder.Services.AddSingleton<IInventoryScopeService, InventoryScopeService>();
 
 // Build the application
 var app = builder.Build();
+
+// Get the application lifetime object
+var lifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();
+
+lifetime.ApplicationStarted.Register(() =>
+{
+    
+    // Get the logger
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+
+    // Get the address
+    var address = app.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>()?.Addresses.FirstOrDefault();
+
+    // Log the Swagger URL
+    logger.LogInformation("Swagger UI is available at: {Address}/index.html", address);
+});
 
 // Configure
 if (app.Environment.IsDevelopment())

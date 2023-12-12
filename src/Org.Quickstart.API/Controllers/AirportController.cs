@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Org.Quickstart.API.Models;
+using Org.Quickstart.API.Services;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Org.Quickstart.API.Controllers;
@@ -18,19 +19,23 @@ public class AirportController: Controller
 {
      private readonly ILogger _logger;
      private readonly IScope _inventoryScope;
-     
-     public AirportController(ILogger<AirportController> logger, IScope inventoryScope)
+
+     private const string CollectionName = "airport";
+
+     public AirportController(ILogger<AirportController> logger, IInventoryScopeService inventoryScopeService)
      {
-            _logger = logger;
-            _inventoryScope = inventoryScope;
+	     _logger = logger;
+	     _inventoryScope = inventoryScopeService.GetInventoryScope();
      }
      
      [HttpGet]
      [Route("/api/v1/airport/list")]
-     [SwaggerOperation(Summary = "Get list of Airports. Optionally, you can filter the list by Country.\n\nThis provides an example of using a SQL++ query in Couchbase to fetch a list of documents matching the specified criteria.")]
+     [SwaggerOperation(Description = "Get list of Airports. Optionally, you can filter the list by Country.\n\nThis provides an example of using a SQL++ query in Couchbase to fetch a list of documents matching the specified criteria.")]
      [SwaggerResponse(200, "List of airports")]
      [SwaggerResponse(500, "Unexpected Error")]
-     public async Task<IActionResult> List(string country, int? limit, int? offset)
+     public async Task<IActionResult> List([FromQuery(Name = "country"), SwaggerParameter("Country (Example: France, United Kingdom, United States)", Required = false)] string country, 
+	     [FromQuery(Name = "limit"), SwaggerParameter("Number of airports to return (page size). Default value: 10.", Required = false)] int? limit, 
+	     [FromQuery(Name = "offset"), SwaggerParameter("Number of airports to skip (for pagination). Default value: 0.", Required = false)] int? offset)
      {
 	   try
 	   {
@@ -86,10 +91,12 @@ public class AirportController: Controller
      
        [HttpGet]
        [Route("/api/v1/airport/direct-connections")]
-       [SwaggerOperation(Summary = "Get Direct Connections from specified Airport.\n\nThis provides an example of using a SQL++ query in Couchbase to fetch a list of documents matching the specified criteria.")]
+       [SwaggerOperation(Description = "Get Direct Connections from specified Airport.\n\nThis provides an example of using a SQL++ query in Couchbase to fetch a list of documents matching the specified criteria.")]
        [SwaggerResponse(200, "List of direct connections")]
        [SwaggerResponse(500, "Unexpected Error")]
-     public async Task<IActionResult> ToAirport(string airport, int? limit, int? offset)
+       public async Task<IActionResult> ToAirport([FromQuery(Name = "airport"), SwaggerParameter("Airport (Example: SFO, JFK, LAX)", Required = true)] string airport, 
+	       [FromQuery(Name = "limit"), SwaggerParameter("Number of direct connections to return (page size). Default value: 10.", Required = false)] int? limit, 
+	       [FromQuery(Name = "offset"), SwaggerParameter("Number of direct connections to skip (for pagination). Default value: 0.", Required = false)] int? offset)
      {
 	     try
 	     {
@@ -126,12 +133,12 @@ public class AirportController: Controller
      [SwaggerResponse(200, "Found Airport")]
      [SwaggerResponse(404, "Airport ID not found")]
      [SwaggerResponse(500, "Unexpected Error")]
-     public async Task<IActionResult> GetById([FromRoute] string id)
+     public async Task<IActionResult> GetById([FromRoute(Name = "id"), SwaggerParameter("Airport ID like airport_10", Required = true)] string id)
      {
 	     try
 	     {
 		     //get the collection
-		     var collection = await _inventoryScope.CollectionAsync("airport");
+		     var collection = await _inventoryScope.CollectionAsync(CollectionName);
 
 		     //get the document from the bucket using the id
 		     var result = await collection.GetAsync(id);
@@ -160,12 +167,12 @@ public class AirportController: Controller
      [SwaggerResponse(201, "Created")]
      [SwaggerResponse(409, "Airport already exists")]
      [SwaggerResponse(500, "Unexpected Error")]
-     public async Task<IActionResult> Post(string id, [FromBody] AirportCreateRequestCommand request)
+     public async Task<IActionResult> Post([FromRoute(Name = "id"), SwaggerParameter("Airport ID like airport_10", Required = true)] string id, AirportCreateRequestCommand request)
      {
 	     try
 	     {
 		     //get the collection
-			     var collection = await _inventoryScope.CollectionAsync("airport");
+			     var collection = await _inventoryScope.CollectionAsync(CollectionName);
 
 			     //get airport from request
 			     var airport = request.GetAirport();
@@ -191,12 +198,12 @@ public class AirportController: Controller
      [SwaggerResponse(200, "Airport Updated")]
      [SwaggerResponse(404, "Airport ID not found")]
      [SwaggerResponse(500, "Unexpected Error")]
-     public async Task<IActionResult> Update(string id, [FromBody] AirportCreateRequestCommand request)
+     public async Task<IActionResult> Update([FromRoute(Name = "id"), SwaggerParameter("Airport ID like airport_10", Required = true)] string id, AirportCreateRequestCommand request)
      {
 	     try
 	     { 
 				 //get the collection
-			     var collection = await _inventoryScope.CollectionAsync("airport");
+			     var collection = await _inventoryScope.CollectionAsync(CollectionName);
 
 			     //get current airport from the database and update it
 			     if (await collection.GetAsync(id) is { } result)
@@ -229,12 +236,12 @@ public class AirportController: Controller
      [SwaggerResponse(204, "Airport Deleted")]
      [SwaggerResponse(404, "Airport ID not found")]
      [SwaggerResponse(500, "Unexpected Error")]
-     public async Task<IActionResult> Delete([FromRoute] string id)
+     public async Task<IActionResult> Delete([FromRoute(Name = "id"), SwaggerParameter("Airport ID like airport_10", Required = true)] string id)
      {
 	     try
 	     {
 		         //get the collection
-			     var collection = await _inventoryScope.CollectionAsync("airport");
+			     var collection = await _inventoryScope.CollectionAsync(CollectionName);
 
 			     //get the document from the bucket using the id
 			     var result = await collection.GetAsync(id);
@@ -263,5 +270,4 @@ public class AirportController: Controller
 	     
 	     return NotFound();
      }
-
 }
