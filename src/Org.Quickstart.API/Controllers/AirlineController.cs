@@ -30,7 +30,7 @@ public class AirlineController: Controller
 
      [HttpGet]
      [Route("/api/v1/airline/list")]
-     [SwaggerOperation(Description = "Get list of Airlines. Optionally, you can filter the list by Country.\n\nThis provides an example of using SQL++ query in Couchbase to fetch a list of documents matching the specified criteria.")]
+     [SwaggerOperation(Description = "Get list of Airlines. Optionally, you can filter the list by Country.\n\nThis provides an example of using SQL++ query in Couchbase to fetch a list of documents matching the specified criteria. \n\n Code: [`Controllers/AirlineController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/dotnet-8-travelsample/src/Org.Quickstart.API/Controllers/AirlineController.cs) \n Class: `AirlineController` \n Method: `List`")]
      [SwaggerResponse(200, "List of airlines")]
      [SwaggerResponse(500, "Unexpected Error")]
      public async Task<IActionResult> List([FromQuery(Name = "country"), SwaggerParameter("Country (Example: France, United Kingdom, United States)", Required = false)] string country, 
@@ -80,14 +80,14 @@ public class AirlineController: Controller
 	     }
 	     catch (Exception ex)
 	     {
-		     _logger.LogError(ex.Message);
+		     _logger.LogError("An error occurred: {Message}", ex.Message);
 		     return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message} {ex.StackTrace} {Request.GetDisplayUrl()}");
 	     }
      }
      
      [HttpGet]
      [Route("/api/v1/airline/to-airport")]
-     [SwaggerOperation(Description = "Get Airlines flying to specified destination Airport.\n\nThis provides an example of using SQL++ query in Couchbase to fetch a list of documents matching the specified criteria.")]
+     [SwaggerOperation(Description = "Get Airlines flying to specified destination Airport.\n\nThis provides an example of using SQL++ query in Couchbase to fetch a list of documents matching the specified criteria. \n\n Code: [`Controllers/AirlineController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/dotnet-8-travelsample/src/Org.Quickstart.API/Controllers/AirlineController.cs) \n Class: `AirlineController` \n Method: `ToAirport`")]
      [SwaggerResponse(200, "List of airlines")]
      [SwaggerResponse(500, "Unexpected Error")]
      public async Task<IActionResult> ToAirport([FromQuery(Name = "airport"), SwaggerParameter("Destination airport (Example: SFO, JFK, LAX)", Required = true)] string airport, 
@@ -127,13 +127,13 @@ public class AirlineController: Controller
 	     
 	     catch (Exception ex)
 	     {
-		     _logger.LogError(ex.Message);
+		     _logger.LogError("An error occurred: {Message}", ex.Message);
 		     return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message} {ex.StackTrace} {Request.GetDisplayUrl()}");
 	     }
      }
      
      [HttpGet("{id}")]
-     [SwaggerOperation(Description = "Get Airline with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to get a document with specified ID.")]
+     [SwaggerOperation(Description = "Get Airline with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to get a document with specified ID.\n\n Code: [`Controllers/AirlineController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/dotnet-8-travelsample/src/Org.Quickstart.API/Controllers/AirlineController.cs) \n Class: `AirlineController` \n Method: `GetById` ")]
      [SwaggerResponse(200, "Found Airline")]
      [SwaggerResponse(404, "Airline ID not found")]
      [SwaggerResponse(500, "Unexpected Error")]
@@ -159,7 +159,7 @@ public class AirlineController: Controller
 	     }
 	     catch (Exception ex)
 	     {
-		     _logger.LogError(ex.Message);
+		     _logger.LogError("An error occurred: {Message}", ex.Message);
 		     return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message} {ex.StackTrace} {Request.GetDisplayUrl()}");
 	     }
 
@@ -167,7 +167,7 @@ public class AirlineController: Controller
      }
      
      [HttpPost("{id}")]
-     [SwaggerOperation(Description = "Create Airport with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to create a new document with a specified ID.")]
+     [SwaggerOperation(Description = "Create Airport with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to create a new document with a specified ID. \n\n Code: [`Controllers/AirlineController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/dotnet-8-travelsample/src/Org.Quickstart.API/Controllers/AirlineController.cs) \n Class: `AirlineController` \n Method: `Post`")]
      [SwaggerResponse(201, "Created")]
      [SwaggerResponse(409, "Airline already exists")]
      [SwaggerResponse(500, "Unexpected Error")]
@@ -193,13 +193,13 @@ public class AirlineController: Controller
 	     }
 	     catch (Exception ex)
 	     {
-		     _logger.LogError(ex.Message);
+		     _logger.LogError("An error occurred: {Message}", ex.Message);
 		     return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message} {ex.StackTrace} {Request.GetDisplayUrl()}");
 	     }
      }
      
      [HttpPut("{id}")]
-     [SwaggerOperation(Description = "Update Airline with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to upsert a document with specified ID.")]
+     [SwaggerOperation(Description = "Update Airline with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to upsert a document with specified ID. \n\n Code: [`Controllers/AirlineController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/dotnet-8-travelsample/src/Org.Quickstart.API/Controllers/AirlineController.cs) \n Class: `AirlineController` \n Method: `Update`")]
      [SwaggerResponse(200, "Airline Updated")]
      [SwaggerResponse(404, "Airline ID not found")]
      [SwaggerResponse(500, "Unexpected Error")]
@@ -229,7 +229,7 @@ public class AirlineController: Controller
 	     }
 	     catch (Exception ex)
 	     {
-		     _logger.LogError(ex.Message);
+		     _logger.LogError("An error occurred: {Message}", ex.Message);
 		     return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message} {ex.StackTrace} {Request.GetDisplayUrl()}");
 	     }
 
@@ -237,7 +237,7 @@ public class AirlineController: Controller
      }
      
      [HttpDelete("{id}")]
-     [SwaggerOperation(Description = "Delete Airline with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to delete a document with specified ID.")]
+     [SwaggerOperation(Description = "Delete Airline with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to delete a document with specified ID. \n\n Code: [`Controllers/AirlineController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/dotnet-8-travelsample/src/Org.Quickstart.API/Controllers/AirlineController.cs) \n Class: `AirlineController` \n Method: `Delete`")]
      [SwaggerResponse(204, "Airline Deleted")]
      [SwaggerResponse(404, "Airline ID not found")]
      [SwaggerResponse(500, "Unexpected Error")]
@@ -269,7 +269,7 @@ public class AirlineController: Controller
 	     }
 	     catch (Exception ex)
 	     {
-		     _logger.LogError(ex.Message);
+		     _logger.LogError("An error occurred: {Message}", ex.Message);
 		     return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
 	     }
 	     

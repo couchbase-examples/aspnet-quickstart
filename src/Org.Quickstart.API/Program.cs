@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -94,7 +92,6 @@ var lifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();
 
 lifetime.ApplicationStarted.Register(() =>
 {
-    
     // Get the logger
     var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
@@ -126,11 +123,7 @@ app.Lifetime.ApplicationStopped.Register(() =>
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
-
+app.MapControllers();
 app.Run();
 
 // required for integration testing from asp.net

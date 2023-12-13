@@ -28,11 +28,11 @@ public class RouteController: Controller
     }
     
     [HttpGet("{id}")]
-    [SwaggerOperation(Description = "Get Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to get a document with specified ID.")]
+    [SwaggerOperation(Description = "Get Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to get a document with specified ID. \n\n Code: [`Controllers/RouteController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/dotnet-8-travelsample/src/Org.Quickstart.API/Controllers/RouteController.cs) \n Class: `RouteController` \n Method: `GetById`")]
     [SwaggerResponse(200, "Found Route")]
     [SwaggerResponse(404, "Route ID not found")]
     [SwaggerResponse(500, "Unexpected Error")]
-	public async Task<IActionResult> GetById([FromRoute(Name = "id"), SwaggerParameter("Route ID like route_10", Required = true)] string id)
+	public async Task<IActionResult> GetById([FromRoute(Name = "id"), SwaggerParameter("Route ID like route_10000", Required = true)] string id)
     {
 	     try
 	     {
@@ -55,7 +55,7 @@ public class RouteController: Controller
 	     }
 	     catch (Exception ex)
 	     {
-		     _logger.LogError(ex.Message);
+		     _logger.LogError("An error occurred: {Message}", ex.Message);
 		     return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message} {ex.StackTrace} {Request.GetDisplayUrl()}");
 	     }
 
@@ -63,11 +63,11 @@ public class RouteController: Controller
      }
      
      [HttpPost("{id}")]
-     [SwaggerOperation(Description = "Create Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to create a new document with a specified ID.")]
+     [SwaggerOperation(Description = "Create Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to create a new document with a specified ID. \n\n Code: [`Controllers/RouteController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/dotnet-8-travelsample/src/Org.Quickstart.API/Controllers/RouteController.cs) \n Class: `RouteController` \n Method: `Post`")]
      [SwaggerResponse(201, "Created")]
      [SwaggerResponse(409, "Route already exists")]
      [SwaggerResponse(500, "Unexpected Error")]
-     public async Task<IActionResult> Post([FromRoute(Name = "id"), SwaggerParameter("Route ID like route_10", Required = true)] string id, 
+     public async Task<IActionResult> Post([FromRoute(Name = "id"), SwaggerParameter("Route ID like route_10000", Required = true)] string id, 
 	     [FromBody, SwaggerRequestBody("The route details to create", Required = true)] RouteCreateRequestCommand request)
      {
 	     try
@@ -90,17 +90,17 @@ public class RouteController: Controller
 	     }
 	     catch (Exception ex)
 	     {
-		     _logger.LogError(ex.Message);
+		     _logger.LogError("An error occurred: {Message}", ex.Message);
 		     return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message} {ex.StackTrace} {Request.GetDisplayUrl()}");
 	     }
      }
      
      [HttpPut("{id}")]
-     [SwaggerOperation(Description = "Update Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to upsert a document with specified ID.")]
+     [SwaggerOperation(Description = "Update Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to upsert a document with specified ID. \n\n Code: [`Controllers/RouteController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/dotnet-8-travelsample/src/Org.Quickstart.API/Controllers/RouteController.cs) \n Class: `RouteController` \n Method: `Update`")]
      [SwaggerResponse(200, "Route Updated")]
      [SwaggerResponse(404, "Route ID not found")]
      [SwaggerResponse(500, "Unexpected Error")]
-     public async Task<IActionResult> Update([FromRoute(Name = "id"), SwaggerParameter("Route ID like route_10", Required = true)] string id, 
+     public async Task<IActionResult> Update([FromRoute(Name = "id"), SwaggerParameter("Route ID like route_10000", Required = true)] string id, 
 	     [FromBody, SwaggerRequestBody("The route details to update", Required = true)] RouteCreateRequestCommand request)
      {
 	     try
@@ -127,7 +127,7 @@ public class RouteController: Controller
 	     }
 	     catch (Exception ex)
 	     {
-		     _logger.LogError(ex.Message);
+		     _logger.LogError("An error occurred: {Message}", ex.Message);
 		     return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message} {ex.StackTrace} {Request.GetDisplayUrl()}");
 	     }
 
@@ -135,11 +135,11 @@ public class RouteController: Controller
      }
      
      [HttpDelete("{id}")]
-     [SwaggerOperation(Description = "Delete Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to delete a document with specified ID.")]
+     [SwaggerOperation(Description = "Delete Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to delete a document with specified ID. \n\n Code: [`Controllers/RouteController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/dotnet-8-travelsample/src/Org.Quickstart.API/Controllers/RouteController.cs) \n Class: `RouteController` \n Method: `Delete`")]
      [SwaggerResponse(204, "Route Deleted")]
      [SwaggerResponse(404, "Route ID not found")]
      [SwaggerResponse(500, "Unexpected Error")]
-     public async Task<IActionResult> Delete([FromRoute(Name = "id"), SwaggerParameter("Route ID like route_10", Required = true)] string id)
+     public async Task<IActionResult> Delete([FromRoute(Name = "id"), SwaggerParameter("Route ID like route_10000", Required = true)] string id)
      {
 	     try
 	     {
@@ -167,7 +167,7 @@ public class RouteController: Controller
 	     }
 	     catch (Exception ex)
 	     {
-		     _logger.LogError(ex.Message);
+		     _logger.LogError("An error occurred: {Message}", ex.Message);
 		     return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
 	     }
 	     
