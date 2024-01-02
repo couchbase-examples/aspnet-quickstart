@@ -403,3 +403,9 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+
+#vscode
+.vscode
+
+#rider
+.idea
