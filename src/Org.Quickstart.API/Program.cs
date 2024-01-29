@@ -16,24 +16,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 var config = builder.Configuration.GetSection("Couchbase");
 
-// Register the configuration for Couchbase and Dependency Injection Framework
-if (builder.Environment.EnvironmentName == "Testing")
+// Check if environment variables are set
+var connectionString = Environment.GetEnvironmentVariable("DB_CONN_STR");
+var username = Environment.GetEnvironmentVariable("DB_USERNAME");
+var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
+
+if (!string.IsNullOrEmpty(connectionString) && !string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
 {
-    var connectionString = Environment.GetEnvironmentVariable("DB_CONN_STR");
-    var username = Environment.GetEnvironmentVariable("DB_USERNAME");
-    var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
+    // Override values with environment variables if they are set
     config["ConnectionString"] = connectionString;
     config["Username"] = username;
     config["Password"] = password;
-    
-    builder.Services.Configure<CouchbaseConfig>(config);
-    builder.Services.AddCouchbase(config);
 }
-else
-{
-    builder.Services.Configure<CouchbaseConfig>(config);
-    builder.Services.AddCouchbase(config);
-}
+
+// Register the configuration for Couchbase and Dependency Injection Framework
+builder.Services.Configure<CouchbaseConfig>(config);
+builder.Services.AddCouchbase(config);
 
 // ConfigureServices
 builder.Services.AddCors(options =>
