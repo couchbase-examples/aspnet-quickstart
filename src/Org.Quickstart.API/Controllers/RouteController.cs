@@ -28,7 +28,7 @@ public class RouteController: Controller
     }
     
     [HttpGet("{id}")]
-    [SwaggerOperation(Description = "Get Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to get a document with specified ID. \n\n Code: [`Controllers/RouteController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/dotnet-8-travelsample/src/Org.Quickstart.API/Controllers/RouteController.cs) \n Class: `RouteController` \n Method: `GetById`")]
+    [SwaggerOperation(Description = "Get Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to get a document with specified ID. \n\n Code: [`Controllers/RouteController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/main/src/Org.Quickstart.API/Controllers/RouteController.cs) \n Class: `RouteController` \n Method: `GetById`")]
     [SwaggerResponse(200, "Found Route")]
     [SwaggerResponse(404, "Route ID not found")]
     [SwaggerResponse(500, "Unexpected Error")]
@@ -63,7 +63,7 @@ public class RouteController: Controller
      }
      
      [HttpPost("{id}")]
-     [SwaggerOperation(Description = "Create Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to create a new document with a specified ID. \n\n Code: [`Controllers/RouteController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/dotnet-8-travelsample/src/Org.Quickstart.API/Controllers/RouteController.cs) \n Class: `RouteController` \n Method: `Post`")]
+     [SwaggerOperation(Description = "Create Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to create a new document with a specified ID. \n\n Code: [`Controllers/RouteController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/main/src/Org.Quickstart.API/Controllers/RouteController.cs) \n Class: `RouteController` \n Method: `Post`")]
      [SwaggerResponse(201, "Created")]
      [SwaggerResponse(409, "Route already exists")]
      [SwaggerResponse(500, "Unexpected Error")]
@@ -96,7 +96,7 @@ public class RouteController: Controller
      }
      
      [HttpPut("{id}")]
-     [SwaggerOperation(Description = "Update Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to upsert a document with specified ID. \n\n Code: [`Controllers/RouteController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/dotnet-8-travelsample/src/Org.Quickstart.API/Controllers/RouteController.cs) \n Class: `RouteController` \n Method: `Update`")]
+     [SwaggerOperation(Description = "Update Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to upsert a document with specified ID. \n\n Code: [`Controllers/RouteController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/main/src/Org.Quickstart.API/Controllers/RouteController.cs) \n Class: `RouteController` \n Method: `Update`")]
      [SwaggerResponse(200, "Route Updated")]
      [SwaggerResponse(404, "Route ID not found")]
      [SwaggerResponse(500, "Unexpected Error")]
@@ -135,7 +135,7 @@ public class RouteController: Controller
      }
      
      [HttpDelete("{id}")]
-     [SwaggerOperation(Description = "Delete Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to delete a document with specified ID. \n\n Code: [`Controllers/RouteController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/dotnet-8-travelsample/src/Org.Quickstart.API/Controllers/RouteController.cs) \n Class: `RouteController` \n Method: `Delete`")]
+     [SwaggerOperation(Description = "Delete Route with specified ID.\n\nThis provides an example of using Key Value operations in Couchbase to delete a document with specified ID. \n\n Code: [`Controllers/RouteController`](https://github.com/couchbase-examples/aspnet-quickstart/blob/main/src/Org.Quickstart.API/Controllers/RouteController.cs) \n Class: `RouteController` \n Method: `Delete`")]
      [SwaggerResponse(204, "Route Deleted")]
      [SwaggerResponse(404, "Route ID not found")]
      [SwaggerResponse(500, "Unexpected Error")]

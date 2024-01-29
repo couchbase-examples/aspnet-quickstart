@@ -93,12 +93,10 @@ docker build -t couchbase-aspnet-quickstart .
 - Run the docker image
 ```shell 
 cd aspnet-quickstart
-docker run -d -p 8080:8080 --name couchbase-dotnet-container couchbase-aspnet-quickstart
+docker run -e DB_CONN_STR=<connection_string> -e DB_USERNAME=<user_with_read_write_permission_to_travel-sample_bucket> -e DB_PASSWORD=<password_for_user> -p 8080:8080 couchbase-aspnet-quickstart
 ```
 
 You can access the Application on http://localhost:8080/index.html
-
->**Note:** Make the configuration changes inside `appsettings.json` file while running using docker.
 
 ### Verifying the Application
 
