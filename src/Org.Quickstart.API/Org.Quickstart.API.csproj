@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -10,16 +10,11 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Org.Quickstart.API' " />
   <ItemGroup>
-    <PackageReference Include="Couchbase.Transactions" Version="1.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+    <PackageReference Include="Couchbase.Transactions" Version="1.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.3.0" />
-    <PackageReference Include="CouchbaseNetClient" Version="3.4.5" />
-    <PackageReference Include="Couchbase.Extensions.DependencyInjection" Version="3.2.9" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Services\" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
+    <PackageReference Include="CouchbaseNetClient" Version="3.4.13" />
+    <PackageReference Include="Couchbase.Extensions.DependencyInjection" Version="3.4.13" />
   </ItemGroup>
 </Project>
