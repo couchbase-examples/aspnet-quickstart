@@ -16,7 +16,7 @@ To run this prebuilt project, you will need:
 
 - [Couchbase Capella](https://www.couchbase.com/products/capella/) cluster with [travel-sample](https://docs.couchbase.com/dotnet-sdk/current/ref/travel-app-data-model.html) bucket loaded.
     - To run this tutorial using a self managed Couchbase cluster, please refer to the [appendix](#running-self-managed-couchbase-cluster).
-- [.NET SDK v6+](https://dotnet.microsoft.com/en-us/download/dotnet) installed.
+- [.NET SDK v8+](https://dotnet.microsoft.com/en-us/download/dotnet) installed.
     - Ensure that the .Net version is [compatible](https://docs.couchbase.com/dotnet-sdk/current/project-docs/compatibility.html#dotnet-compatibility) with the Couchbase SDK.
 - Code Editor installed (Visual Studio Professional, Visual Studio Code, or JetBrains Rider)
 - Loading Travel Sample Bucket
@@ -53,7 +53,7 @@ Specifically, you need to do the following:
 - Create the [database credentials](https://docs.couchbase.com/cloud/clusters/manage-database-users.html) to access the travel-sample bucket (Read and Write) used in the application.
 - [Allow access](https://docs.couchbase.com/cloud/clusters/allow-ip-address.html) to the Cluster from the IP on which the application is running.
 
-All configuration for communication with the database is stored in the [appsettings.Development.json](https://github.com/couchbase-examples/aspnet-quickstart/blob/main/src/Org.Quickstart.API/appsettings.Development.json) file.  This includes the connection string, username, password, bucket name and scope name.  The default username is assumed to be `Administrator` and the default password is assumed to be `P@$$w0rd12`.  If these are different in your environment you will need to change them before running the application.
+The application reads Couchbase settings from [appsettings.Development.json](https://github.com/couchbase-examples/aspnet-quickstart/blob/main/src/Org.Quickstart.API/appsettings.Development.json) and lets you override the connection string, username, and password with the `DB_CONN_STR`, `DB_USERNAME`, and `DB_PASSWORD` environment variables. The checked-in file includes placeholder defaults for local development.
 
 ```json
   "Couchbase": {
@@ -67,6 +67,14 @@ All configuration for communication with the database is stored in the [appsetti
     "KvIgnoreRemoteCertificateNameMismatch": true
   }
 
+```
+
+For local or CI runs, you can keep secrets out of the tracked config file by exporting environment variables instead:
+
+```sh
+export DB_CONN_STR="couchbase://localhost"
+export DB_USERNAME="Administrator"
+export DB_PASSWORD="P@ssw0rd12"
 ```
 
 > Note: The connection string expects the `couchbases://` or `couchbase://` part.
