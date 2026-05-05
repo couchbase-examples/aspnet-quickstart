@@ -53,7 +53,7 @@ Specifically, you need to do the following:
 - Create the [database credentials](https://docs.couchbase.com/cloud/clusters/manage-database-users.html) to access the travel-sample bucket (Read and Write) used in the application.
 - [Allow access](https://docs.couchbase.com/cloud/clusters/allow-ip-address.html) to the Cluster from the IP on which the application is running.
 
-The application reads Couchbase settings from [appsettings.Development.json](https://github.com/couchbase-examples/aspnet-quickstart/blob/main/src/Org.Quickstart.API/appsettings.Development.json) and lets you override the connection string, username, and password with the `DB_CONN_STR`, `DB_USERNAME`, and `DB_PASSWORD` environment variables. The checked-in file includes placeholder defaults for local development.
+The application reads Couchbase settings from [appsettings.Development.json](https://github.com/couchbase-examples/aspnet-quickstart/blob/main/src/Org.Quickstart.API/appsettings.Development.json) and lets you override the connection string, username, and password with the `DB_CONN_STR`, `DB_USERNAME`, and `DB_PASSWORD` environment variables. The current startup code applies the override only when all three environment variables are set together; otherwise it falls back to the checked-in local-development placeholders.
 
 ```json
   "Couchbase": {
