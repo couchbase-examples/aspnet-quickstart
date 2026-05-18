@@ -53,7 +53,7 @@ Specifically, you need to do the following:
 - Create the [database credentials](https://docs.couchbase.com/cloud/clusters/manage-database-users.html) to access the travel-sample bucket (Read and Write) used in the application.
 - [Allow access](https://docs.couchbase.com/cloud/clusters/allow-ip-address.html) to the Cluster from the IP on which the application is running.
 
-The application reads Couchbase settings from [appsettings.Development.json](https://github.com/couchbase-examples/aspnet-quickstart/blob/main/src/Org.Quickstart.API/appsettings.Development.json) and lets you override the connection string, username, and password with the `DB_CONN_STR`, `DB_USERNAME`, and `DB_PASSWORD` environment variables. The current startup code applies the override only when all three environment variables are set together; otherwise it falls back to the checked-in local-development placeholders.
+All configuration for communication with the database is stored in the [appsettings.Development.json](https://github.com/couchbase-examples/aspnet-quickstart/blob/main/src/Org.Quickstart.API/appsettings.Development.json) file.  This includes the connection string, username, password, bucket name and scope name.  The default username is assumed to be `Administrator` and the default password is assumed to be `P@$$w0rd12`.  If these are different in your environment you will need to change them before running the application.
 
 ```json
   "Couchbase": {
@@ -69,14 +69,6 @@ The application reads Couchbase settings from [appsettings.Development.json](htt
 
 ```
 
-For local or CI runs, you can keep secrets out of the tracked config file by exporting environment variables instead:
-
-```sh
-export DB_CONN_STR="couchbase://localhost"
-export DB_USERNAME="Administrator"
-export DB_PASSWORD="P@ssw0rd12"
-```
-
 > Note: The connection string expects the `couchbases://` or `couchbase://` part.
 
 ## Running The Application
@@ -85,7 +77,7 @@ export DB_PASSWORD="P@ssw0rd12"
 
 At this point, we have installed the dependencies, loaded the travel-sample data and configured the application with the credentials. The application is now ready and you can run it.
 
-```shell 
+```shell
 cd src/Org.Quickstart.API
 dotnet run
 ```
@@ -93,13 +85,13 @@ dotnet run
 ### Using Docker
 
 - Build the Docker image
-```shell 
+```shell
 cd aspnet-quickstart
-docker build -t couchbase-aspnet-quickstart . 
+docker build -t couchbase-aspnet-quickstart .
 ```
 
 - Run the docker image
-```shell 
+```shell
 cd aspnet-quickstart
 docker run -e DB_CONN_STR=<connection_string> -e DB_USERNAME=<user_with_read_write_permission_to_travel-sample_bucket> -e DB_PASSWORD=<password_for_user> -p 8080:8080 couchbase-aspnet-quickstart
 ```
@@ -123,7 +115,7 @@ To run the standard integration tests, use the following commands:
 
 ```sh
 cd ../Org.Quickstart.IntegrationTests/
-dotnet restore 
+dotnet restore
 dotnet build
 dotnet test
 ```
