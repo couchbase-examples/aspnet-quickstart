@@ -16,7 +16,7 @@ To run this prebuilt project, you will need:
 
 - [Couchbase Capella](https://www.couchbase.com/products/capella/) cluster with [travel-sample](https://docs.couchbase.com/dotnet-sdk/current/ref/travel-app-data-model.html) bucket loaded.
     - To run this tutorial using a self managed Couchbase cluster, please refer to the [appendix](#running-self-managed-couchbase-cluster).
-- [.NET SDK v6+](https://dotnet.microsoft.com/en-us/download/dotnet) installed.
+- [.NET SDK v8+](https://dotnet.microsoft.com/en-us/download/dotnet) installed.
     - Ensure that the .Net version is [compatible](https://docs.couchbase.com/dotnet-sdk/current/project-docs/compatibility.html#dotnet-compatibility) with the Couchbase SDK.
 - Code Editor installed (Visual Studio Professional, Visual Studio Code, or JetBrains Rider)
 - Loading Travel Sample Bucket
@@ -77,7 +77,7 @@ All configuration for communication with the database is stored in the [appsetti
 
 At this point, we have installed the dependencies, loaded the travel-sample data and configured the application with the credentials. The application is now ready and you can run it.
 
-```shell 
+```shell
 cd src/Org.Quickstart.API
 dotnet run
 ```
@@ -85,13 +85,13 @@ dotnet run
 ### Using Docker
 
 - Build the Docker image
-```shell 
+```shell
 cd aspnet-quickstart
-docker build -t couchbase-aspnet-quickstart . 
+docker build -t couchbase-aspnet-quickstart .
 ```
 
 - Run the docker image
-```shell 
+```shell
 cd aspnet-quickstart
 docker run -e DB_CONN_STR=<connection_string> -e DB_USERNAME=<user_with_read_write_permission_to_travel-sample_bucket> -e DB_PASSWORD=<password_for_user> -p 8080:8080 couchbase-aspnet-quickstart
 ```
@@ -115,7 +115,7 @@ To run the standard integration tests, use the following commands:
 
 ```sh
 cd ../Org.Quickstart.IntegrationTests/
-dotnet restore 
+dotnet restore
 dotnet build
 dotnet test
 ```
