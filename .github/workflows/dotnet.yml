@@ -37,7 +37,7 @@ jobs:
           timeout 120 dotnet test --no-build --verbosity normal 
       - name: Report Status
         if: always()
-        uses: ravsamhq/notify-slack-action@v1
+        uses: ravsamhq/notify-slack-action@2.5.0
         with:
           status: ${{ job.status }}
           notify_when: "failure,warnings"
