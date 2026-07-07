@@ -53,7 +53,7 @@ Specifically, you need to do the following:
 - Create the [database credentials](https://docs.couchbase.com/cloud/clusters/manage-database-users.html) to access the travel-sample bucket (Read and Write) used in the application.
 - [Allow access](https://docs.couchbase.com/cloud/clusters/allow-ip-address.html) to the Cluster from the IP on which the application is running.
 
-All configuration for communication with the database is stored in the [appsettings.Development.json](https://github.com/couchbase-examples/aspnet-quickstart/blob/main/src/Org.Quickstart.API/appsettings.Development.json) file.  This includes the connection string, username, password, bucket name and scope name.  The default username is assumed to be `Administrator` and the default password is assumed to be `P@$$w0rd12`.  If these are different in your environment you will need to change them before running the application.
+For local development, the default Couchbase configuration lives in the [appsettings.Development.json](https://github.com/couchbase-examples/aspnet-quickstart/blob/main/src/Org.Quickstart.API/appsettings.Development.json) file. This includes the connection string, username, password, bucket name, and scope name. The application also honors the `DB_CONN_STR`, `DB_USERNAME`, and `DB_PASSWORD` environment variables; when those are set, they override the file values at runtime.
 
 ```json
   "Couchbase": {
@@ -140,7 +140,7 @@ If you would like to add another entity to the APIs, these are the steps to foll
 
 If you are running this quickstart with a self managed Couchbase cluster, you need to [load](https://docs.couchbase.com/server/current/manage/manage-settings/install-sample-buckets.html) the travel-sample data bucket in your cluster and generate the credentials for the bucket.
 
-You need to update the connection string and the credentials in the [appsettings.Development.json](https://github.com/couchbase-examples/aspnet-quickstart/blob/main/src/Org.Quickstart.API/appsettings.Development.json) file in the source folder.
+You need to provide the connection string and credentials either in [appsettings.Development.json](https://github.com/couchbase-examples/aspnet-quickstart/blob/main/src/Org.Quickstart.API/appsettings.Development.json) or via the `DB_CONN_STR`, `DB_USERNAME`, and `DB_PASSWORD` environment variables before running the app.
 
 > **NOTE:** Couchbase must be installed and running prior to running the the ASP.NET app.
 
