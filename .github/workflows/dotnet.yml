@@ -14,23 +14,22 @@ jobs:
       DB_CONN_STR: ${{ vars.DB_CONN_STR }}
       DB_USERNAME: ${{ vars.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      # The CI Capella cluster advertises a private-endpoint alternate address that
+      # GitHub runners cannot resolve; use the nodes' default (public) hostnames.
+      Couchbase__NetworkResolution: default
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
       - name: Check Memory Free
         run: |
           free -m
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 8.0.x
       - name: Restore dependencies
-        run: |
-          cd src/Org.Quickstart.API  
-          dotnet restore
+        run: dotnet restore Org.Quickstart.sln
       - name: Build
-        run: |
-          cd src/Org.Quickstart.API  
-          dotnet build --configuration Debug --no-restore 
+        run: dotnet build Org.Quickstart.sln --configuration Debug --no-restore
       - name: Test
         run: |
           cd src/Org.Quickstart.IntegrationTests  
@@ -38,7 +37,7 @@ jobs:
       - name: Report Status
         if: always()
         continue-on-error: true
-        uses: ravsamhq/notify-slack-action@v1
+        uses: ravsamhq/notify-slack-action@2.5.0
         with:
           status: ${{ job.status }}
           notify_when: "failure,warnings"
