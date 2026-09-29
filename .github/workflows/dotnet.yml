@@ -14,6 +14,9 @@ jobs:
       DB_CONN_STR: ${{ vars.DB_CONN_STR }}
       DB_USERNAME: ${{ vars.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      # The CI Capella cluster advertises a private-endpoint alternate address that
+      # GitHub runners cannot resolve; use the nodes' default (public) hostnames.
+      Couchbase__NetworkResolution: default
     steps:
       - uses: actions/checkout@v7
       - name: Check Memory Free
