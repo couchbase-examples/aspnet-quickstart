@@ -15,12 +15,12 @@ jobs:
       DB_USERNAME: ${{ vars.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
       - name: Check Memory Free
         run: |
           free -m
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 8.0.x
       - name: Restore dependencies
@@ -38,7 +38,7 @@ jobs:
       - name: Report Status
         if: always()
         continue-on-error: true
-        uses: ravsamhq/notify-slack-action@v1
+        uses: ravsamhq/notify-slack-action@2.5.0
         with:
           status: ${{ job.status }}
           notify_when: "failure,warnings"
