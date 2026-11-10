@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Org.Quickstart.API.Models;
 using Couchbase.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting.Server;
