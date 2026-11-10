@@ -9,14 +9,14 @@ Often, the first step developers do after creating their database is to create a
 
 Full documentation can be found on the [Couchbase Developer Portal](https://developer.couchbase.com/tutorial-quickstart-csharp-aspnet).
 
-If you are looking for a quickstart using [ASP.NET Minimal API](https://learn.microsoft.com/en-us/aspnet/core/tutorials/min-web-api?view=aspnetcore-8.0&tabs=visual-studio), you can find it in this [repo](https://github.com/couchbase-examples/aspnet-minapi-quickstart-travelsample).
+If you are looking for a quickstart using [ASP.NET Minimal API](https://learn.microsoft.com/en-us/aspnet/core/tutorials/min-web-api?view=aspnetcore-10.0&tabs=visual-studio), you can find it in this [repo](https://github.com/couchbase-examples/aspnet-minapi-quickstart-travelsample).
 
 ## Prerequisites
 To run this prebuilt project, you will need:
 
 - [Couchbase Capella](https://www.couchbase.com/products/capella/) cluster with [travel-sample](https://docs.couchbase.com/dotnet-sdk/current/ref/travel-app-data-model.html) bucket loaded.
     - To run this tutorial using a self managed Couchbase cluster, please refer to the [appendix](#running-self-managed-couchbase-cluster).
-- [.NET SDK v8+](https://dotnet.microsoft.com/en-us/download/dotnet) installed.
+- [.NET SDK v10+](https://dotnet.microsoft.com/en-us/download/dotnet) installed.
     - Ensure that the .Net version is [compatible](https://docs.couchbase.com/dotnet-sdk/current/project-docs/compatibility.html#dotnet-compatibility) with the Couchbase SDK.
 - Code Editor installed (Visual Studio Professional, Visual Studio Code, or JetBrains Rider)
 - Loading Travel Sample Bucket

@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/Org.Quickstart.API/bin/Debug/net5.0/Org.Quickstart.API.dll",
+            "program": "${workspaceFolder}/src/Org.Quickstart.API/bin/Debug/net10.0/Org.Quickstart.API.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/Org.Quickstart.API",
             "stopAtEntry": false,
